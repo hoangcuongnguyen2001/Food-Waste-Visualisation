@@ -3,10 +3,25 @@ var width = 700;
     padding = 30;
   	
 
-var dataset, xScale, yScale, xAxis, yAxis;
+var xScale, yScale, xAxis, yAxis;
 
+var data = [{Country:"Australia", Household_Food_Waste:"102"},
+	{Country:"Austria", Household_Food_Waste:"39"},
+	{Country:"Denmark", Household_Food_Waste:"81"},
+	{Country:"Netherlands", Household_Food_Waste:"50"},
+	{Country:"New Zealand", Household_Food_Waste:"61"},
+	{Country:"Norway", Household_Food_Waste:"79"},
+	{Country:"Sweden", Household_Food_Waste:"81"},
+	{Country:"United Kingdom", Household_Food_Waste:"77"},
+	{Country:"USA", Household_Food_Waste:"59"},
+	{Country:"Japan", Household_Food_Waste:"64"},
+	{Country:"Poland", Household_Food_Waste:"56"},
+	{Country:"Finland", Household_Food_Waste:"65"},
+	{Country:"Italy", Household_Food_Waste:"67"},
+	{Country:"France", Household_Food_Waste:"85"},
+    {Country:"Belgium", Household_Food_Waste:"50"}];
 
-function barChart(){
+var dataset;
 
     var xScale = d3.scaleBand()
 	               .domain()
@@ -86,21 +101,5 @@ function barChart(){
       .attr("transform", "translate(" + padding + ",0)")
       .call(yAxis);
       
-}
-
-function init(){
 
 
-    d3.csv("data/Global_Household_Waste_Comparison.csv", function(d){
-       return{
-           country: +d.Countries,
-           number: +d.Household_Food_Waste
-       };
-    })
-        .then(function(data){
-           dataset = data;
-           lineChart(dataset);
-    });
-}
-
-window.onload = init;
