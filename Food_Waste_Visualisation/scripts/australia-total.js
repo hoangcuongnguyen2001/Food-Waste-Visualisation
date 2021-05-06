@@ -1,5 +1,5 @@
-let width = 600;
-    height = 300;
+let width = 900;
+    height = 450;
     padding = 30;
 
 let dataset = [{Year:'2006-2007',Energy_Recovery: 44, Disposal : 190, Recycling: 2},
@@ -81,18 +81,21 @@ svg.append("g")
 .attr("transform", "translate(" + padding + ",0)")
 .call(yAxis);
 
+//Create "Year" on  X axis
 svg.append('text')
 .attr('x', width/2)
 .attr('y', height)
 .attr('text-anchor', 'middle')
 .style('font-family', 'Helvetica')
-.style('font-size', 10)
+.style('font-size', 12)
 .text('Year');
 
+//Create "Food waste per capita (kg/year)" on Y Axis
 svg.append('text')
-.attr('x', 120)
-.attr('y', padding)
-.attr('text-anchor', 'middle')
+.attr('x', 5)
+.attr('y', 20)
+.attr('text-anchor', 'left')
 .style('font-family', 'Helvetica')
-.style('font-size', 10)
+.style('font-size', 12)
 .text('Food waste per capita (kg/year)');
+
