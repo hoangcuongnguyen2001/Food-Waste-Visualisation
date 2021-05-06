@@ -1,6 +1,10 @@
+"use strict";
+
+
+
 let width = 900;
-    height = 450;
-    padding = 30;
+let height = 450;
+let padding = 30;
 
 let dataset = [{Year:'2006-2007',Energy_Recovery: 44, Disposal : 190, Recycling: 2},
                {Year:'2008-2009',Energy_Recovery: 40, Disposal : 189, Recycling: 1},
@@ -25,14 +29,14 @@ let svg = d3.select("body")
 let colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-var xScale = d3.scaleBand()
+let xScale = d3.scaleBand()
                .domain(d3.range(dataset.length))
                .range([padding, width])
                .paddingInner(0.15)
                .paddingOuter(0.15);
 
 
-var yScale = d3.scaleLinear()
+let yScale = d3.scaleLinear()
                .domain([0,				
                    d3.max(dataset, function(d) {
                        return d.Energy_Recovery + d.Disposal + d.Recycling;
@@ -41,11 +45,11 @@ var yScale = d3.scaleLinear()
                .range([height - padding, padding]);
 
 // Create x- and y-axis.
-var xAxis = d3.axisBottom().scale(xScale).tickFormat(function(i) {return dataset[i].Year;})
-var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+let xAxis = d3.axisBottom().scale(xScale).tickFormat(function(i) {return dataset[i].Year;})
+let yAxis = d3.axisLeft().scale(yScale);
 
    // Add a group for each row of data
-var groups = svg.selectAll("g")
+let groups = svg.selectAll("g")
        .data(series)
        .enter()
        .append("g")
@@ -101,3 +105,18 @@ svg.append('text')
 
 
 //Add Total Value At Top Of Bar
+svg.selectAll('text')
+   .data(dataset,function(d){
+       return d.Energy_Recovery + d.Disposal + d.Recycling;
+   })
+   .enter()
+   .append(text)
+   .attr('x', function(d,i){
+       return i * (width / dataset.length);
+   })
+   .attr("y", function(d) {
+       return height - (d / 4);
+   });
+
+
+

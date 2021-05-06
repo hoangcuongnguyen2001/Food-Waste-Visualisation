@@ -1,102 +1,79 @@
-var width = 700;
-    height = 300;
-    padding = 30;
+"use strict";
+
+
+var third_width = 700;
+var third_height = 300;
+var third_padding = 30;
   	
 
-var xScale, yScale, xAxis, yAxis;
-
-var data = [{Country:"Australia", Household_Food_Waste:"102"},
-	{Country:"Austria", Household_Food_Waste:"39"},
-	{Country:"Denmark", Household_Food_Waste:"81"},
-	{Country:"Netherlands", Household_Food_Waste:"50"},
-	{Country:"New Zealand", Household_Food_Waste:"61"},
-	{Country:"Norway", Household_Food_Waste:"79"},
-	{Country:"Sweden", Household_Food_Waste:"81"},
-	{Country:"United Kingdom", Household_Food_Waste:"77"},
-	{Country:"USA", Household_Food_Waste:"59"},
-	{Country:"Japan", Household_Food_Waste:"64"},
-	{Country:"Poland", Household_Food_Waste:"56"},
-	{Country:"Finland", Household_Food_Waste:"65"},
-	{Country:"Italy", Household_Food_Waste:"67"},
-	{Country:"France", Household_Food_Waste:"85"},
-    {Country:"Belgium", Household_Food_Waste:"50"}];
-
-var dataset;
-
-    var xScale = d3.scaleBand()
-	               .domain()
-	               .rangeRound([padding ,width])
-	               .paddingInner(0.05);
-
-    var yScale = d3.scaleLinear()
-                   .domain([0, d3.max(dataset)])
-	               .range([height - padding, 0]);
+var third_data = [{Country:"Australia", Household_Food_Waste:102},
+	{Country:"Austria", Household_Food_Waste:39},
+	{Country:"Denmark", Household_Food_Waste:81},
+	{Country:"Netherlands", Household_Food_Waste:50},
+	{Country:"New Zealand", Household_Food_Waste:61},
+	{Country:"Norway", Household_Food_Waste:79},
+	{Country:"Sweden", Household_Food_Waste:81},
+	{Country:"United Kingdom", Household_Food_Waste:77},
+	{Country:"USA", Household_Food_Waste:59},
+	{Country:"Japan", Household_Food_Waste:64},
+	{Country:"Poland", Household_Food_Waste:56},
+	{Country:"Finland", Household_Food_Waste:65},
+	{Country:"Italy", Household_Food_Waste:67},
+	{Country:"France", Household_Food_Waste:85},
+    {Country:"Belgium", Household_Food_Waste:50}];
 
 
-    var xAxis = d3.axisBottom()
-                  .scale(xScale);
+
+    var third_xScale = d3.scaleBand()
+	               .domain(d3.range(third_data.length))
+	               .rangeRound([third_padding ,third_width])
+	               .paddingInner(0.1);
+
+    var third_yScale = d3.scaleLinear()
+                    .domain([0,				
+                     d3.max(third_data, function(d) {
+                       return d.Household_Food_Waste;
+                      })
+                   ])
+	               .range([third_height - third_padding, third_padding]);
 
 
-    var yAxis = d3.axisLeft()
+    var third_yAxis = d3.axisLeft()
                  .scale(yScale);
 
-    var svg = d3.select("#chart3")
+    var third_svg = d3.select("#chart3")
                 .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", third_width)
+                .attr("height", third_height);
 
 
 
- svg.selectAll("rect")
-	.data(dataset)
+ third_svg.selectAll("rect")
+	.data(third_data)
   	.enter()
   	.append("rect")
   	.attr("x", function(d, i) {
-  	   return xScale(i);
+  	   return third_xScale(i);
   	})
     .attr("y", function(d) {
-  	   return height - padding - yScale(d);
+  	   return third_height - third_padding - third_yScale(d);
   	})
-    .attr("width", xScale.bandwidth())
+    .attr("width", third_xScale.bandwidth())
   	.attr("height", function(d) {
-  	   return yScale(d);
+  	   return third_yScale(d);
   	})
   	.attr("fill", function(d) {
   	   return "rgb(0, 0, " + Math.round(d * 10) + ")";
-  	})
-  	.on("mouseover", function(d){
-		d3.select(this).attr("fill", "orange");
-  		var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 2;
-  		var yPosition = parseFloat(d3.select(this).attr("y")) + 14;
-
-  		svg.append("text")
-  			.attr("id", "tooltip")
-  			.attr("x", xPosition)
-  			.attr("y", yPosition)
-  			.attr("text-anchor", "middle")
-  			.attr("font-family", "sans-serif")
-  			.attr("font-size", "11px")
-  			.attr("font-weight", "bold")
-  			.attr("fill", "black")
-  			.text(d);
-  	})
-  	.on("mouseout", function(d){
-  		d3.select("#tooltip").remove();
-  		d3.select(this).attr("fill", function(d){
-  			return "rgb(0, 0, " + Math.round(d * 10) + ")";
-  		})
   	});
 
 
 
-
- //Create X axis
-   svg.append("g")
+   third_svg.append("g")
       .attr("class", "axis")
-      .attr("transform", "translate(0," + (height - padding) + ")")
-      .call(xAxis);
+      .attr("transform", "translate(" + third_padding + ",0)")
+      .call(third_yAxis);
+      
 
-   svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(" + padding + ",0)")
-      .call(yAxis);
+
+
+
