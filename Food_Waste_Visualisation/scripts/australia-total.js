@@ -41,7 +41,7 @@ var yScale = d3.scaleLinear()
                .range([height - padding, padding]);
 
 // Create x- and y-axis.
-var xAxis = d3.axisBottom().scale(xScale).ticks(5);
+var xAxis = d3.axisBottom().scale(xScale).tickFormat(function(i) {return dataset[i].Year;})
 var yAxis = d3.axisLeft().scale(yScale).ticks(5);
 
    // Add a group for each row of data
@@ -89,13 +89,3 @@ svg.append('text')
 .style('font-family', 'Helvetica')
 .style('font-size', 12)
 .text('Year');
-
-//Create "Food waste per capita (kg/year)" on Y Axis
-svg.append('text')
-.attr('x', 5)
-.attr('y', 20)
-.attr('text-anchor', 'left')
-.style('font-family', 'Helvetica')
-.style('font-size', 12)
-.text('Food waste per capita (kg/year)');
-
