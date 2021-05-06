@@ -28,8 +28,8 @@ let colors = d3.scaleOrdinal(d3.schemeCategory10);
 var xScale = d3.scaleBand()
                .domain(d3.range(dataset.length))
                .range([padding, width])
-               .paddingInner(0.1)
-               .paddingOuter(0.1);
+               .paddingInner(0.15)
+               .paddingOuter(0.15);
 
 
 var yScale = d3.scaleLinear()
@@ -81,3 +81,18 @@ svg.append("g")
 .attr("transform", "translate(" + padding + ",0)")
 .call(yAxis);
 
+svg.append('text')
+.attr('x', width/2)
+.attr('y', height)
+.attr('text-anchor', 'middle')
+.style('font-family', 'Helvetica')
+.style('font-size', 10)
+.text('Year');
+
+svg.append('text')
+.attr('x', 120)
+.attr('y', padding)
+.attr('text-anchor', 'middle')
+.style('font-family', 'Helvetica')
+.style('font-size', 10)
+.text('Food waste per capita (kg/year)');
