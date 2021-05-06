@@ -89,3 +89,15 @@ svg.append('text')
 .style('font-family', 'Helvetica')
 .style('font-size', 12)
 .text('Year');
+
+//Create "Food waste per capita (kg/year)" on Y Axis
+svg.append('text')
+.attr('x', 5)
+.attr('y', 20)
+.attr('text-anchor', 'left')
+.style('font-family', 'Helvetica')
+.style('font-size', 12)
+.text('Food waste per capita (kg/year)');
+
+
+//Add Total Value At Top Of Bar
