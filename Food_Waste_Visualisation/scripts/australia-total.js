@@ -1,4 +1,5 @@
-"use strict";
+
+
 
 
 
@@ -57,6 +58,25 @@ let groups = svg.selectAll("g")
            return colors(i);
        });
 
+
+//Create tooltip for the chart.
+var tooltip = svg.append("g")
+  .attr("class", "tooltip")
+  .style("display", "none");
+    
+tooltip.append("rect")
+  .attr("width", 30)
+  .attr("height", 20)
+  .attr("fill", "white")
+  .style("opacity", 0.5);
+
+tooltip.append("text")
+  .attr("x", 15)
+  .attr("dy", "1.2em")
+  .style("text-anchor", "middle")
+  .attr("font-size", "12px")
+  .attr("font-weight", "bold");
+
    // Add a rect for each data value
 groups.selectAll("rect")
        .data(function(d) { return d; })
@@ -71,7 +91,18 @@ groups.selectAll("rect")
        .attr("height", function(d) {
            return yScale(d[0]) - yScale(d[1]);
        })
-       .attr("width", xScale.bandwidth());
+       .attr("width", xScale.bandwidth())
+       .on("mouseover", function() { tooltip.style("display", null); })
+       .on("mousemove", function(d) {
+           var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 3;
+           var yPosition = parseFloat(d3.select(this).attr("y")) + 14;
+           tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+           tooltip.select("text").text(d[1] - d[0]);
+      })
+      .on("mouseout", function() { 
+           tooltip.style("display", "none"); 
+      });
+
 
 //Create X axis
 svg.append("g")
@@ -105,18 +136,6 @@ svg.append('text')
 
 
 //Add Total Value At Top Of Bar
-svg.selectAll('text')
-   .data(dataset,function(d){
-       return d.Energy_Recovery + d.Disposal + d.Recycling;
-   })
-   .enter()
-   .append(text)
-   .attr('x', function(d,i){
-       return i * (width / dataset.length);
-   })
-   .attr("y", function(d) {
-       return height - (d / 4);
-   });
 
 
 
