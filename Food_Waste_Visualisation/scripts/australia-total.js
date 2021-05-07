@@ -1,8 +1,4 @@
-
-
-
-
-
+"use strict";
 let width = 900;
 let height = 450;
 let padding = 30;
@@ -18,7 +14,8 @@ let dataset = [{Year:'2006-2007',Energy_Recovery: 44, Disposal : 190, Recycling:
                {Year:'2017-2018',Energy_Recovery: 46, Disposal : 111, Recycling: 24},
                {Year:'2018-2019',Energy_Recovery: 41, Disposal : 109, Recycling: 24}];
 
-let stack = d3.stack().keys(["Energy_Recovery", "Disposal", "Recycling"]).order(d3.stackOrderDescending); 
+let first_stack = ["Energy_Recovery", "Disposal", "Recycling"];
+let stack = d3.stack().keys(first_stack).order(d3.stackOrderDescending); 
 let series = stack(dataset);
 
  //Create SVG element
@@ -94,13 +91,20 @@ groups.selectAll("rect")
        .attr("width", xScale.bandwidth())
        .on("mouseover", function() { tooltip.style("display", null); })
        .on("mousemove", function(d) {
+           // return the value for the hover place.
            var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 3;
-           var yPosition = parseFloat(d3.select(this).attr("y")) + 14;
+           var yPosition = parseFloat(d3.select(this).attr("y")) + 3;
            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
            tooltip.select("text").text(d[1] - d[0]);
+           // changing opacity.
+           d3.selectAll("rect").style("opacity", 0.5);
+           d3.select(this).style("opacity", 1);
+
       })
       .on("mouseout", function() { 
+          //return to normal.
            tooltip.style("display", "none"); 
+           d3.selectAll("rect").style("opacity", 0.8);
       });
 
 
@@ -122,7 +126,7 @@ svg.append('text')
 .attr('y', height)
 .attr('text-anchor', 'middle')
 .style('font-family', 'Helvetica')
-.style('font-size', 12)
+.style('font-size', 8)
 .text('Year');
 
 //Create "Food waste per capita (kg/year)" on Y Axis
@@ -131,9 +135,32 @@ svg.append('text')
 .attr('y', 20)
 .attr('text-anchor', 'left')
 .style('font-family', 'Helvetica')
-.style('font-size', 12)
+.style('font-size', 8)
 .text('Food waste per capita (kg/year)');
 
+
+var size = 10;
+svg.selectAll("mydots")
+  .data(first_stack)
+  .enter()
+  .append("rect")
+    .attr("x", 750)
+    .attr("y", function(d,i){ return 20 + i*(size+5);}) 
+    .attr("width", size)
+    .attr("height", size)
+    .style("fill", function(d){ return colors(d);});
+
+// Add one dot in the legend for each name.
+svg.selectAll("mylabels")
+  .data(first_stack)
+  .enter()
+  .append("text")
+    .attr("x", 750 + size*1.2)
+    .attr("y", function(d,i){ return 25 + i*(size+5) + (size/2);}) 
+    .style("fill", function(d){ return colors(d);})
+    .text(function(d){ return d;})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle");
 
 //Add Total Value At Top Of Bar
 
