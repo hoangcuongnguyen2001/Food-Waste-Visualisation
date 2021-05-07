@@ -14,7 +14,7 @@ let dataset = [{Year:'2006-2007',Energy_Recovery: 44, Disposal : 190, Recycling:
                {Year:'2017-2018',Energy_Recovery: 46, Disposal : 111, Recycling: 24},
                {Year:'2018-2019',Energy_Recovery: 41, Disposal : 109, Recycling: 24}];
 
-let first_stack = ["Energy_Recovery", "Disposal", "Recycling"];
+let first_stack = ["Recycling", "Energy_Recovery", "Disposal"];
 let stack = d3.stack().keys(first_stack).order(d3.stackOrderDescending); 
 let series = stack(dataset);
 
@@ -24,7 +24,7 @@ let svg = d3.select("body")
             .attr("width", width)
             .attr("height", height);
 
-let colors = d3.scaleOrdinal(d3.schemeCategory10);
+const colors = ['green', 'blue', 'orange'];
 
 
 let xScale = d3.scaleBand()
@@ -52,7 +52,7 @@ let groups = svg.selectAll("g")
        .enter()
        .append("g")
        .style("fill", function(d, i) {
-           return colors(i);
+           return colors[i];
        });
 
 
@@ -148,7 +148,7 @@ svg.selectAll("mydots")
     .attr("y", function(d,i){ return 20 + i*(size+5);}) 
     .attr("width", size)
     .attr("height", size)
-    .style("fill", function(d){ return colors(d);});
+    .style("fill", function(d,i){ return colors[i];});
 
 // Add one dot in the legend for each name.
 svg.selectAll("mylabels")
@@ -157,12 +157,28 @@ svg.selectAll("mylabels")
   .append("text")
     .attr("x", 750 + size*1.2)
     .attr("y", function(d,i){ return 25 + i*(size+5) + (size/2);}) 
-    .style("fill", function(d){ return colors(d);})
-    .text(function(d){ return d;})
+    .text(d => d)
+    .style("fill", (d, i) => colors[i])
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle");
 
 //Add Total Value At Top Of Bar
-
+svg.selectAll(".text")
+	 .data(dataset, function(d){
+     return d.Year;
+   })
+   .enter()
+   .append("text")
+	 .attr("class", "text")
+	 .attr("text-anchor", "middle")
+	 .attr("x", function(d) {
+     return xScale(d);
+    })
+	 .attr("y", function(d){ 
+     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling) + 5;
+   })
+   .text(function(d){
+    return d.Energy_Recovery + d.Disposal + d.Recycling;
+   });
 
 
