@@ -30,8 +30,8 @@ const colors = ['green', 'blue', 'orange'];
 let xScale = d3.scaleBand()
                .domain(d3.range(dataset.length))
                .range([padding, width])
-               .paddingInner(0.15)
-               .paddingOuter(0.15);
+               .paddingInner(0.2)
+               .paddingOuter(0.2);
 
 
 let yScale = d3.scaleLinear()
@@ -126,7 +126,7 @@ svg.append('text')
 .attr('y', height)
 .attr('text-anchor', 'middle')
 .style('font-family', 'Helvetica')
-.style('font-size', 8)
+.style('font-size', 'small')
 .text('Year');
 
 //Create "Food waste per capita (kg/year)" on Y Axis
@@ -135,7 +135,7 @@ svg.append('text')
 .attr('y', 20)
 .attr('text-anchor', 'left')
 .style('font-family', 'Helvetica')
-.style('font-size', 8)
+.style('font-size', 'small')
 .text('Food waste per capita (kg/year)');
 
 
@@ -143,11 +143,10 @@ var size = 10;
 svg.selectAll("mydots")
   .data(first_stack)
   .enter()
-  .append("rect")
-    .attr("x", 750)
-    .attr("y", function(d,i){ return 20 + i*(size+5);}) 
-    .attr("width", size)
-    .attr("height", size)
+  .append("circle")
+    .attr("cx", 750)
+    .attr("cy", function(d,i){ return 24 + i*(size+5);}) 
+    .attr("r", 7)
     .style("fill", function(d,i){ return colors[i];});
 
 // Add one dot in the legend for each name.
@@ -171,14 +170,14 @@ svg.selectAll(".text")
    .append("text")
 	 .attr("class", "text")
 	 .attr("text-anchor", "middle")
-	 .attr("x", function(d) {
-     return xScale(d);
+   .style('font-style', 'italic')
+   .style('font-size', 'small')
+	 .attr("x", function(d,i) {
+     return xScale(i) + xScale.bandwidth() / 2;
     })
 	 .attr("y", function(d){ 
-     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling) + 5;
+     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling);
    })
    .text(function(d){
     return d.Energy_Recovery + d.Disposal + d.Recycling;
    });
-
-
