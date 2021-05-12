@@ -72,8 +72,3 @@ var third_data = [{Country:"Australia", Household_Food_Waste:102},
       .attr("class", "axis")
       .attr("transform", "translate(" + third_padding + ",0)")
       .call(third_yAxis);
-      
-
-
-
-
