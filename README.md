@@ -1,5 +1,5 @@
 # Food-Waste-Visualisation
-This is a visualisation (with cooperation with Lawrence Zhou, another Data Science student in Swinburne) about the food waste problem (until 2019) in Australia.
+This is a visualisation (with cooperation with Lawrence Zhou: https://github.com/illonion, another Data Science student in Swinburne) about the food waste problem (until 2019) in Australia.
 
 Data source:
 - Australian States Map, Rowan Hogan: https://github.com/rowanhogan/australian-states (JSON file for the choropleth)
