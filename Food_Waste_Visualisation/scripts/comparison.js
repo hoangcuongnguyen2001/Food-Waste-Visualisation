@@ -1,11 +1,11 @@
 "use strict";
 
 
-var third_width = 800;
-var third_height = 400;
+var third_width = 1000;
+var third_height = 450;
 var third_padding = 30;
   	
-var third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", "Sweden", "United Kingdom","USA","Japan","Poland","Finland","Italy","France","Belgium"]
+var third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
 var third_data = [102, 39, 81, 50, 61, 79, 81, 77, 59, 64, 56, 65, 57, 85, 50];
 
 var third_xScale = d3.scaleBand()
@@ -28,6 +28,26 @@ var third_svg = d3.select("#chart3")
                   .attr("width", third_width)
                   .attr("height", third_height);
 
+
+
+//Create tooltip for the chart.
+var third_tooltip = svg.append("g")
+  .attr("id", "tooltip")
+  .style("display", "none");
+    
+third_tooltip.append("rect")
+             .attr("width", 30)
+             .attr("height", 20)
+             .attr("fill", "white")
+             .style("opacity", 0.5);
+
+third_tooltip.append("text")
+             .attr("x", 15)
+             .attr("dy", "1em")
+             .style("text-anchor", "middle")
+             .attr("font-size", "12px")
+             .attr("font-weight", "bold");
+
 third_svg.selectAll("rect")
 	.data(third_data)
   	.enter()
@@ -35,16 +55,49 @@ third_svg.selectAll("rect")
   	.attr("x", function(d, i) {
   	   return third_xScale(i);
   	})
-    .attr("y", function(d) {
-  	   return third_height - third_padding - third_yScale(d);
-  	})
-    .attr("width", third_xScale.bandwidth())
-  	.attr("height", function(d) {
+   .attr("y", function(d) {
   	   return third_yScale(d);
   	})
+   .attr("width", third_xScale.bandwidth())
+  	.attr("height", function(d) {
+  	   return third_height - third_padding - third_yScale(d);
+  	})
   	.attr("fill", function(d) {
-  	   return "rgb(0, 0, " + Math.round(d * 10) + ")";
-  	});
+  	   return "rgb(" + Math.round(d * 2) + "," + Math.round(d) + ","  + Math.round(d / 2) + ")";
+  	})
+   .on("mouseover", function() { third_tooltip.style("display", null); })
+   .on("mousemove", function(d) {
+       // return the value for the hover place.
+       var third_xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 3;
+       var third_yPosition = parseFloat(d3.select(this).attr("y")) + 3;
+       third_tooltip.attr("transform", "translate(" + third_xPosition + "," + third_yPosition + ")");
+       third_tooltip.select("text").text(d);
+       // changing opacity.
+       d3.selectAll("rect").style("opacity", 0.75);
+       d3.select(this).style("opacity", 1.25);
+
+  })
+  .on("mouseout", function() { 
+      //return to normal.
+       tooltip.style("display", "none"); 
+       d3.selectAll("rect").style("opacity", 1);
+  });
+
+
+
+//Draw 350 ppm line
+third_svg.append("line")
+   .attr("class", "line globalAverage")
+   .attr("x1", third_padding)
+   .attr("x2", third_width)
+   .attr("y1", yScale(74))
+   .attr("y2", yScale(74));
+
+third_svg.append("text")
+   .attr("class", "globalWaste")
+   .attr("x", third_padding + 20)
+   .attr("y", yScale(500000) - 7)
+   .text("Global average of household food waste");
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 third_svg.append('text')
@@ -60,7 +113,9 @@ third_svg.append("g")
          .attr("transform", "translate(" + third_padding + ",0)")
          .call(third_yAxis);
 
+
+
 third_svg.append("g")
          .attr("class", "axis")
-         .attr("transform", "translate(" + (third_height - third_padding) + ",0)")
+         .attr("transform", "translate(0,"+ (third_height - third_padding) + ")")
          .call(third_xAxis);
