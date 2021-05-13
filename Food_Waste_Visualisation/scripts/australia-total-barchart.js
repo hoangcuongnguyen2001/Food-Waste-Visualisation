@@ -9,13 +9,13 @@ let interactive_dataset = [44, 40, 38, 41, 44, 43, 49, 47, 46, 41];
 
 let interactive_xScale = d3.scaleBand()
             .domain(d3.range(interactive_dataset.length))
-            .rangeRound([0, interactive_width])
+            .rangeRound([padding, interactive_width])
             .paddingInner(0.2)
             .paddingOuter(0.2);
 
 let interactive_yScale = d3.scaleLinear()
             .domain([0, d3.max(interactive_dataset)])
-            .rangeRound([0, interactive_height]);
+            .rangeRound([interactive_height - interactive_padding, interactive_padding]);
 
 // X and Y Axis
 let interactive_xAxis = d3.axisBottom().scale(interactive_xScale).tickFormat(function(i) {return interactive_years[i];})
@@ -33,9 +33,9 @@ interactive_svg.selectAll("rect")
             .enter()
             .append("rect")
             .attr("x", function(d,i) {return xScale(i);})
-            .attr("y", function(d) {return interactive_height - interactive_padding - interactive_yScale(d);})
+            .attr("y", function(d) {return interactive_yScale(d);})
             .attr("width", xScale.bandwidth())
-            .attr("height", function(d) {return interactive_yScale(d);})
+            .attr("height", function(d) {return interactive_height - interactive_padding - interactive_yScale(d);})
             .attr("fill", "green");
 
 // Call X and Y Axis
