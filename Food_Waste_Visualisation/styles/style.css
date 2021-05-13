@@ -1,0 +1,10 @@
+.globalAverage {
+    stroke: red;
+    stroke-dasharray: 2, 3;
+}
+
+.globalWaste{
+    font-family: Arial, sans-serif;
+	font-size: 12px;
+	fill: red;
+}
