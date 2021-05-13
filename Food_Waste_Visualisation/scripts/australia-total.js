@@ -58,7 +58,7 @@ let groups = svg.selectAll("g")
 
 //Create tooltip for the chart.
 var tooltip = svg.append("g")
-  .attr("class", "tooltip")
+  .attr("id", "tooltip")
   .style("display", "none");
     
 tooltip.append("rect")
