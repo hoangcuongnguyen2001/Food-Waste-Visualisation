@@ -1,3 +1,4 @@
+
 "use strict";
 let width = 900;
 let height = 450;
@@ -19,7 +20,7 @@ let stack = d3.stack().keys(first_stack).order(d3.stackOrderDescending);
 let series = stack(dataset);
 
  //Create SVG element
-let svg = d3.select("chart1")
+let svg = d3.select("body")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
@@ -58,7 +59,7 @@ let groups = svg.selectAll("g")
 
 //Create tooltip for the chart.
 var tooltip = svg.append("g")
-  .attr("id", "tooltip")
+  .attr("class", "tooltip")
   .style("display", "none");
     
 tooltip.append("rect")
@@ -92,8 +93,8 @@ groups.selectAll("rect")
        .on("mouseover", function() { tooltip.style("display", null); })
        .on("mousemove", function(d) {
            // return the value for the hover place.
-           var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() / 3;
-           var yPosition = parseFloat(d3.select(this).attr("y")) + 3;
+           var xPosition = parseFloat(d3.select(this).attr("x")) + 20;
+           var yPosition = parseFloat(d3.select(this).attr("y"));
            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
            tooltip.select("text").text(d[1] - d[0]);
            // changing opacity.
@@ -132,7 +133,7 @@ svg.append('text')
 //Create "Food waste per capita (kg/year)" on Y Axis
 svg.append('text')
 .attr('x', 5)
-.attr('y', 20)
+.attr('y', 6)
 .attr('text-anchor', 'left')
 .style('font-family', 'Helvetica')
 .style('font-size', 'small')
@@ -155,7 +156,7 @@ svg.selectAll("mylabels")
   .enter()
   .append("text")
     .attr("x", 750 + size*1.2)
-    .attr("y", function(d,i){ return 25 + i*(size+5) + (size/2);}) 
+    .attr("y", function(d,i){ return 22 + i*(size+5) + (size/2);}) 
     .text(d => d)
     .style("fill", (d, i) => colors[i])
     .attr("text-anchor", "left")
@@ -170,14 +171,10 @@ svg.selectAll(".text")
    .append("text")
 	 .attr("class", "text")
 	 .attr("text-anchor", "middle")
-   .style('font-style', 'italic')
-   .style('font-size', 'small')
+
 	 .attr("x", function(d,i) {
-     return xScale(i) + xScale.bandwidth() / 2;
+     return xScale(i) + 35;
     })
 	 .attr("y", function(d){ 
-     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling);
-   })
-   .text(function(d){
-    return d.Energy_Recovery + d.Disposal + d.Recycling;
-   });
+     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling) - 3;
+
