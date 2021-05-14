@@ -1,3 +1,4 @@
+
 .globalAverage {
     stroke: red;
     stroke-dasharray: 2, 3;
@@ -17,4 +18,3 @@
 #chart1 {
     display:block;
     transition-duration: 500;
-}
