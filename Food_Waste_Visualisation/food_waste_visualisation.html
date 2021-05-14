@@ -1,37 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Infographic about the food waste problem in Australia" />
-    <meta name="keywords" content="Visualisation, Food waste, Data" />
-    <meta name="author" content="Cuong Nguyen, Lawrence Zhou" />
-    <title>Visualisation on Australian food waste problem </title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Infographic about the food waste problem in Australia" />
+  <meta name="keywords" content="Visualisation, Food waste, Data" />
+  <meta name="author" content="Cuong Nguyen, Lawrence Zhou" />
+  <link rel ="stylesheet" href="styles/style.css" />
+  <title>Visualisation on Australian food waste problem </title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
 
 </head>
 
 <body>
     <h1>Situation of Australia food waste problem. </h1>
     
-	  <p id="chart1"></p>
-    <script src="scripts/australia-total.js"></script> 
+
+	<!-- Chart 1 -->
+    <p id="chart1"></p>
+    <p id="chart1interactive"></p>
+
+    <!-- Chart 1 Interactive Buttons -->
+    <p><button type="button" id="disposal">Disposal food waste</button>
+      <button type="button" id="energyrecovery">Energy recovery</button>
+      <button type="button" id="recycling">Recycling</button>
+      <button type="button" id="all">All</button></p>
+      <script src="scripts/australia-total-barchart.js"></script>
+      <script src="scripts/australia-total.js"></script> 
     <p>Here is the chart for the total amount of food waste in Australia from 2006 to 2019.</p>
     <br />
 
-    <!--<p id="chart2"></p>
-    <script src="scripts/australia-states.js"></script>-->
+    <!-- Chart 2 -->
+
+    <p id="chart2"></p>
+    <script src="scripts/australia-states.js"></script> 
     <p>Here is the chart about the amount of food garbage per capita <br />
         in all states and territories of Australia in 2019.</p>
 
+    
+    <!-- Chart 3-->
+
     <p id="chart3"></p>
+    <p><button type="button" id="sortascending">Sort ascending</button>
+    <button type="button" id="sortdescending">Sort descending</button></p>
     <script src="scripts/comparison.js"></script> 
     <p>Here is the comparison between household food waste in Australia <br />
-      and several other developed countries in 2020.</p>
+      and several other developed countries in 2019.</p>
     
 
-
+    <!-- Footer -->
     <footer style="color:blue">COS30045 Data Visualization<br />
         Cuong Nguyen, Lawrence Zhou</footer>
 
 </body>
+
 </html>

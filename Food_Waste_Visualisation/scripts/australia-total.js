@@ -1,3 +1,4 @@
+
 "use strict";
 let width = 900;
 let height = 450;
@@ -176,16 +177,4 @@ svg.selectAll(".text")
     })
 	 .attr("y", function(d){ 
      return yScale(d.Energy_Recovery + d.Disposal +d.Recycling) - 3;
-=======
-   .style('font-style', 'italic')
-   .style('font-size', 'small')
-	 .attr("x", function(d,i) {
-     return xScale(i) + xScale.bandwidth() / 2;
-    })
-	 .attr("y", function(d){ 
-     return yScale(d.Energy_Recovery + d.Disposal +d.Recycling);
 
-   })
-   .text(function(d){
-    return d.Energy_Recovery + d.Disposal + d.Recycling;
-   });
