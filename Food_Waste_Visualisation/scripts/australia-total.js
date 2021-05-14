@@ -19,7 +19,7 @@ let stack = d3.stack().keys(first_stack).order(d3.stackOrderDescending);
 let series = stack(dataset);
 
  //Create SVG element
-let svg = d3.select("body")
+let svg = d3.select("chart1")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
