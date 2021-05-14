@@ -1,0 +1,20 @@
+.globalAverage {
+    stroke: red;
+    stroke-dasharray: 2, 3;
+}
+
+.globalWaste{
+    font-family: Arial, sans-serif;
+	font-size: 12px;
+	fill: red;
+}
+
+#chart1interactive {
+    display: none;
+    transition-duration: 500;
+}
+
+#chart1 {
+    display:block;
+    transition-duration: 500;
+}
