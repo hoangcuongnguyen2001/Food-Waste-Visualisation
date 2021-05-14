@@ -20,7 +20,7 @@ let stack = d3.stack().keys(first_stack).order(d3.stackOrderDescending);
 let series = stack(dataset);
 
  //Create SVG element
-let svg = d3.select("body")
+let svg = d3.select("#chart1")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
@@ -133,7 +133,7 @@ svg.append('text')
 //Create "Food waste per capita (kg/year)" on Y Axis
 svg.append('text')
 .attr('x', 5)
-.attr('y', 6)
+.attr('y', 10)
 .attr('text-anchor', 'left')
 .style('font-family', 'Helvetica')
 .style('font-size', 'small')
@@ -177,4 +177,4 @@ svg.selectAll(".text")
     })
 	 .attr("y", function(d){ 
      return yScale(d.Energy_Recovery + d.Disposal +d.Recycling) - 3;
-
+   })

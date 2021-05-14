@@ -8,13 +8,10 @@
     font-family: Arial, sans-serif;
 	font-size: 12px;
 	fill: red;
+    transition-duration:500ms;
 }
 
 #chart1interactive {
     display: none;
-    transition-duration: 500;
+    transition-duration:500ms;
 }
-
-#chart1 {
-    display:block;
-    transition-duration: 500;

@@ -87,7 +87,6 @@ d3.select("#all")
             .on("click", function() {
                 interactive.style.display = "none";
                 chart1.style.display = "block";
-                console.log("hello1");
             });
 
 // X and Y Scales
