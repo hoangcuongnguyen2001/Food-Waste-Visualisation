@@ -75,7 +75,7 @@
                           .attr("fill", "white")
                           .text(d);
               third_svg.selectAll("rect").style("opacity", 0.5);
-              d3.select(this).style("opacity", 1.6);
+              d3.select(this).style("opacity", 1);
             })
              .on("mouseout", function() { 
       //return to normal.
