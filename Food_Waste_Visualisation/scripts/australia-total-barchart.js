@@ -43,6 +43,42 @@ interactive_svg.selectAll("rect")
 
 createXandYAxis();
 
+//Create "Year" on  X axis
+interactive_svg.append('text')
+.attr('x', width/2)
+.attr('y', height)
+.attr('text-anchor', 'middle')
+.style('font-family', 'Helvetica')
+.style('font-size', 'small')
+.text('Year');
+
+//Create "Food waste per capita (kg/year)" on Y Axis
+interactive_svg.append('text')
+.attr('x', 5)
+.attr('y', 10)
+.attr('text-anchor', 'left')
+.style('font-family', 'Helvetica')
+.style('font-size', 'small')
+.text('Food waste per capita (kg/year)');
+
+interactiveTitle("Energy Recovery");
+
+function interactiveTitle(category) {
+// Remove Previous "__ Food Waste Per Capita" title
+interactive_svg.selectAll(".interactiveTitle").remove();
+
+// Create "___ Food Waste Per Capita" based on selection
+let tempText = category + " Food Waste Per Capita"
+interactive_svg.append('text')
+.attr('x', width / 2)
+.attr('y', 12)
+.attr('class', 'interactiveTitle')
+.attr('text-anchor', 'middle')
+.style('font-family', 'Helvetica')
+.style('font-size', '16px')
+.text(tempText);
+}
+
 // Add Total Value At Top of Bar
 interactive_svg.append("text")
 
@@ -56,6 +92,7 @@ d3.select("#energyrecovery")
                 interactiveXandYAxis();
                 fillRect("blue");
                 createXandYAxis();
+                interactiveTitle("Energy Recovery");
             });
 
 // If disposal button is clicked on
@@ -68,6 +105,7 @@ d3.select("#disposal")
                 interactiveXandYAxis();
                 fillRect("orange");
                 createXandYAxis();
+                interactiveTitle("Disposal");
             });
 
 // If recycling button is clicked on
@@ -80,6 +118,7 @@ d3.select("#recycling")
                 interactiveXandYAxis();
                 fillRect("green");
                 createXandYAxis();
+                interactiveTitle("Recycling");
             });
 
 // If all button is clicked on
@@ -112,9 +151,9 @@ function interactiveXandYAxis() {
 function fillRect(colour) {
     interactive_svg.selectAll("rect")
             .data(interactive_dataset)
-            .transition(1000)
+            .transition(2000)
             .ease(d3.easeCircleIn)
-            .attr("y", function(d) {return interactive_yScale(d);})
+            .attr("y", function(d) { return interactive_yScale(d); })
             .attr("height", function(d) {return interactive_height - interactive_padding - interactive_yScale(d);})
             .attr("fill", colour);
 }

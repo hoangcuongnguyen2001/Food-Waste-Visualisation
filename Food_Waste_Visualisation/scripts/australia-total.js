@@ -93,7 +93,7 @@ groups.selectAll("rect")
        .on("mouseover", function() { tooltip.style("display", null); })
        .on("mousemove", function(d) {
            // return the value for the hover place.
-           var xPosition = parseFloat(d3.select(this).attr("x")) + 20;
+           var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.bandwidth() * 3 / 10;
            var yPosition = parseFloat(d3.select(this).attr("y"));
            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
            tooltip.select("text").text(d[1] - d[0]);
@@ -139,6 +139,14 @@ svg.append('text')
 .style('font-size', 'small')
 .text('Food waste per capita (kg/year)');
 
+// Create "Overall Food Waste Per Capita"
+svg.append('text')
+.attr('x', width / 2)
+.attr('y', 12)
+.attr('text-anchor', 'middle')
+.style('font-family', 'Helvetica')
+.style('font-size', '16px')
+.text('Overall Food Waste Per Capita');
 
 var size = 10;
 svg.selectAll("mydots")
