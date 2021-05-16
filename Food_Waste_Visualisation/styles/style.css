@@ -1,4 +1,3 @@
-
 .globalAverage {
     stroke: red;
     stroke-dasharray: 2, 3;
@@ -15,3 +14,31 @@
     display: none;
     transition-duration:500ms;
 }
+
+h1{ /* For the first heading on header */
+	color: yellow;
+	border: 1px solid black;
+	font-variant: small-caps;
+	font-family: Calibri, sans-serif;
+	text-align: center;
+	background-color: blue; /* link:https://www.freepik.com/vectors/background */
+	font-size:3em;
+	text-shadow: 5px 3px 4px gray;
+
+}
+
+footer{  /* Used for making the footer */
+	clear:both;
+	border-top: 4px inset darkblue;
+	border-top-style: double;
+}
+
+footer p{
+	text-align:center;
+	font-size:0.8em;
+	font-family:Verdana, sans-serif;
+	display: inline-block; width: 40%;
+}
+
+footer p:first-child {text-align:left;}
+footer p:last-child { text-align:right;}
