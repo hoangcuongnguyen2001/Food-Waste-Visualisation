@@ -1,15 +1,23 @@
 "use strict";
-
-
-
    const third_width = 1000;
    const third_height = 500;
    const third_padding = 30;
   	
-   const third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
-   const third_data = [102, 39, 81, 50, 61, 79, 81, 77, 59, 64, 56, 65, 57, 85, 50];
-
-
+   const third_data = [{id: 1, Country: "Australia", HouseholdWaste: 102},
+                        {id: 2, Country: "Austria", HouseholdWaste: 39},
+                        {id: 3, Country: "Belgium", HouseholdWaste: 50},
+                        {id: 4, Country: "Denmark", HouseholdWaste: 81},
+                        {id: 5, Country: "Finland", HouseholdWaste: 65},
+                        {id: 6, Country: "France", HouseholdWaste: 85},
+                        {id: 7, Country: "Italy", HouseholdWaste: 67},
+                        {id: 8, Country: "Japan", HouseholdWaste: 64},
+                        {id: 9, Country: "Netherlands", HouseholdWaste: 50},
+                        {id: 10, Country: "New Zealand", HouseholdWaste: 61},
+                        {id: 11, Country: "Norway", HouseholdWaste: 79},
+                        {id: 12, Country: "Poland", HouseholdWaste: 56},
+                        {id: 13, Country: "Sweden", HouseholdWaste: 81},
+                        {id: 14, Country: "UK", HouseholdWaste: 77},
+                        {id: 15, Country: "USA", HouseholdWaste: 59}];
 
 //set up xScale, yScale, x- and y-axis.
    const third_xScale = d3.scaleBand()
@@ -24,9 +32,7 @@
 	                  .range([third_height - third_padding, third_padding]);
 
    const third_xAxis = d3.axisBottom()
-					     .scale(third_xScale)
-                    .tickFormat(function(i) {return third_countries[i];})
-
+					     .scale(third_xScale).tickValues([]);
    const third_yAxis = d3.axisLeft()
                     .scale(third_yScale).ticks(5);
 
@@ -52,13 +58,13 @@
   	              return third_xScale(i);
   	          })
             .attr("y", function(d) {
-  	             return third_yScale(d);
+  	             return third_yScale(d.HouseholdWaste);
   	         })
             .attr("width", third_xScale.bandwidth())
   	         .attr("height", function(d) {
-  	              return third_height - third_padding - third_yScale(d);
+  	              return third_height - third_padding - third_yScale(d.HouseholdWaste);
   	         })
-  	         .attr("fill", d => `rgb(0, 0, ${fixed_color / d})`)
+  	         .attr("fill", d => `rgb(0, 0, ${fixed_color / d.HouseholdWaste})`)
    
             .on("mouseover", function(d) {
                  const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
@@ -73,7 +79,7 @@
                           .attr("font-size", "11px")
                           .attr("font-weight", "bold")
                           .attr("fill", "white")
-                          .text(d);
+                          .text(d.HouseholdWaste);
               third_svg.selectAll("rect").style("opacity", 0.5);
               d3.select(this).style("opacity", 1);
             })
@@ -83,7 +89,29 @@
                  third_svg.selectAll("rect").style("opacity", 1);
               });
 
+// Text Countries above Graphs
+function AddCountryName() {
+   third_svg.selectAll("text")
+   .data(third_data)
+   .enter()
+   .append("text")
+   .text(function(d) {
+      return d.Country;
+   })
+   .attr("text-anchor", "middle")
+   .attr("x", function(d, i) {
+         return third_xScale(i) + third_xScale.bandwidth() / 2;
+   })
+   .attr("y", function(d) {
+         return third_yScale(d.HouseholdWaste) - 5;
+   })
+   .attr("class", "country")
+   .attr("font-family", "sans-serif")
+   .attr("font-size", "11px")
+   .attr("fill", "black");
+}
 
+AddCountryName();
 
 //Draw global average line
   third_svg.append("line")
@@ -93,11 +121,7 @@
            .attr("y1", third_yScale(74))
            .attr("y2", third_yScale(74));
 
-  third_svg.append("text")
-           .attr("class", "globalWaste")
-           .attr("x", third_padding + 20)
-           .attr("y", third_yScale(74) - 7)
-           .text("Global average of household food waste");
+GlobalWasteText(410);
 
 //Create "Food waste per capita (kg/year)" on Y Axis
  third_svg.append('text')
@@ -108,17 +132,13 @@
           .style('font-size', 'small')
           .text('Food waste per capita (kg/year)');
 
-
-
-//Create "Countries" on  X axis
-   third_svg.append('text')
-            .attr('x', third_width/2)
-            .attr('y', third_height)
+// Create "Country Household Food waste per capita (kg/year)" as title
+   third_svg.append("text")
+            .attr("x", third_width / 2)
+            .attr("y", 15)
             .attr('text-anchor', 'middle')
             .style('font-family', 'Helvetica')
-            .style('font-size', 'small')
-            .text('Countries');
-
+            .text('Food waste per capita (kg/year)');
 
 // Drawing axes.
    third_svg.append("g")
@@ -131,19 +151,19 @@
          .attr("transform", "translate(" + third_padding + ",0)")
          .call(third_yAxis);
 
-
-
-
+// Sort Ascending
 function sortAscending() {
     
    third_svg.selectAll("rect")
             .sort(function(a, b) {
-                 return d3.ascending(a, b);
+                 return d3.ascending(a.HouseholdWaste, b.HouseholdWaste);
             })
             .attr("x", function(d, i) {
                  return third_xScale(i);
-            })
-            .on("mouseover", function(d) {
+            });
+            third_svg.selectAll(".country").remove();
+            AddCountryName();
+            third_svg.on("mouseover", function(d) {
                const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
                const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
     
@@ -156,7 +176,7 @@ function sortAscending() {
                         .attr("font-size", "11px")
                         .attr("font-weight", "bold")
                         .attr("fill", "white")
-                        .text(d);
+                        .text(d.HouseholdWaste);
              third_svg.selectAll("rect").style("opacity", 0.5);
              d3.select(this).style("opacity", 1.5);
           })
@@ -165,33 +185,43 @@ function sortAscending() {
                third_svg.select("#tooltip").remove(); 
                third_svg.selectAll("rect").style("opacity", 1);
             });
-         
+   
 }
 
+// Sort descending
 function sortDescending() {
    
    third_svg.style("display", "default");
    
    third_svg.selectAll("rect")
             .sort(function(a, b) {
-                 return d3.descending(a, b);
+                 return d3.descending(a.HouseholdWaste, b.HouseholdWaste);
             })
             .attr("x", function(d, i) {
                  return third_xScale(i);
             });
-         
 }		
 
+// Global Waste Text
+function GlobalWasteText(pixels) {
+   third_svg.append("text")
+            .attr("class", "globalWaste")
+            .attr("x", third_padding + pixels)
+            .attr("y", third_yScale(74) - 7)
+            .text("Global average of household food waste");
+}
 
+// Sort Ascending button
 d3.select("#sortascending").on("click", function() { 
    sortAscending();
-            
+   third_svg.selectAll(".globalWaste").remove();
+   GlobalWasteText(200);
 })
 
-
+// Sort Descending button
 d3.select("#sortdescending").on("click", function() { 
    sortDescending();
-            
+   third_svg.selectAll(".globalWaste").remove();
+   GlobalWasteText(410);
 })
-
 

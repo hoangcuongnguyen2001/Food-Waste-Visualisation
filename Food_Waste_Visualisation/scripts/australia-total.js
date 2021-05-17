@@ -112,6 +112,7 @@ groups.selectAll("rect")
 svg.append("g")
 .attr("class", "axis")
 .attr("transform", "translate(0," + (height - padding) + ")")
+.style("font-size", "12px")
 .call(xAxis);
 
 //Create Y axis

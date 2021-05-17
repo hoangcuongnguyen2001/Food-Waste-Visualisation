@@ -39,7 +39,28 @@ interactive_svg.selectAll("rect")
             .attr("y", function(d) {return interactive_yScale(d);})
             .attr("width", interactive_xScale.bandwidth())
             .attr("height", function(d) {return interactive_height - interactive_padding - interactive_yScale(d);})
-            .attr("fill", "blue");
+            .attr("fill", "blue")
+            .on("mouseover", function(d) {
+                const interactive_xPosition = parseFloat(d3.select(this).attr("x")) + interactive_xScale.bandwidth() / 2;
+                const interactive_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
+     
+                interactive_svg.append("text")
+                         .attr("id", "tooltip")
+                         .attr("x", interactive_xPosition)
+                         .attr("y", interactive_yPosition)
+                         .attr("text-anchor", "middle")
+                         .attr("font-family", "sans-serif")
+                         .attr("font-size", "11px")
+                         .attr("font-weight", "bold")
+                         .attr("fill", "white")
+                         .text(d);
+             interactive_svg.selectAll("rect").style("opacity", 0.5);
+             d3.select(this).style("opacity", 1);
+            })
+            .on("mouseout", function() { 
+                interactive_svg.select("#tooltip").remove(); 
+                interactive_svg.selectAll("rect").style("opacity", 1);
+            });
 
 createXandYAxis();
 
