@@ -1,7 +1,7 @@
 "use strict";
    const third_width = 1000;
    const third_height = 500;
-   const third_padding = 30;
+   const third_padding = 50;
   	
    const third_data = [{id: 1, Country: "Australia", HouseholdWaste: 102},
                         {id: 2, Country: "Austria", HouseholdWaste: 39},
@@ -124,13 +124,14 @@ AddCountryName();
 GlobalWasteText(410);
 
 //Create "Food waste per capita (kg/year)" on Y Axis
- third_svg.append('text')
-          .attr('x', 5)
-          .attr('y', 20)
-          .attr('text-anchor', 'left')
-          .style('font-family', 'Helvetica')
-          .style('font-size', 'small')
-          .text('Food waste per capita (kg/year)');
+third_svg.append('text')
+         .attr('x', -(third_height / 2))
+         .attr('y', 10)
+         .attr('text-anchor', 'middle')
+         .attr('transform', 'rotate(270)')
+         .style('font-family', 'Helvetica')
+         .style('font-size', 'small')
+         .text('Food waste per capita (kg/year)');
 
 // Create "Country Household Food waste per capita (kg/year)" as title
    third_svg.append("text")
@@ -138,8 +139,16 @@ GlobalWasteText(410);
             .attr("y", 15)
             .attr('text-anchor', 'middle')
             .style('font-family', 'Helvetica')
-            .text('Food waste per capita (kg/year)');
+            .text('Household Food Waste Per Capita per Country');
 
+//Create "Year" on  X axis
+   third_svg.append('text')
+            .attr('x', third_width/2)
+            .attr('y', third_height)
+            .attr('text-anchor', 'middle')
+            .style('font-family', 'Helvetica')
+            .style('font-size', 'small')
+            .text('Countries');
 // Drawing axes.
    third_svg.append("g")
          .attr("class", "axis")
@@ -222,6 +231,5 @@ d3.select("#sortascending").on("click", function() {
 d3.select("#sortdescending").on("click", function() { 
    sortDescending();
    third_svg.selectAll(".globalWaste").remove();
-   GlobalWasteText(410);
+   GlobalWasteText(520);
 })
-
