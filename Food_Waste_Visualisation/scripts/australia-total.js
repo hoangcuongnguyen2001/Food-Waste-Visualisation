@@ -1,7 +1,7 @@
 "use strict";
 let width = 900;
 let height = 450;
-let padding = 30;
+let padding = 50;
 
 let dataset = [{Year:'2006-2007',Energy_Recovery: 44, Disposal : 190, Recycling: 2},
                {Year:'2008-2009',Energy_Recovery: 40, Disposal : 189, Recycling: 1},
@@ -132,9 +132,10 @@ svg.append('text')
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 svg.append('text')
-.attr('x', 5)
+.attr('x', -(height / 2))
 .attr('y', 10)
-.attr('text-anchor', 'left')
+.attr('text-anchor', 'middle')
+.attr('transform', 'rotate(270)')
 .style('font-family', 'Helvetica')
 .style('font-size', 'small')
 .text('Food waste per capita (kg/year)');
@@ -146,7 +147,7 @@ svg.append('text')
 .attr('text-anchor', 'middle')
 .style('font-family', 'Helvetica')
 .style('font-size', '16px')
-.text('Overall Food Waste Per Capita');
+.text('Overall Food Waste Per Capita in Australia');
 
 var size = 10;
 svg.selectAll("mydots")

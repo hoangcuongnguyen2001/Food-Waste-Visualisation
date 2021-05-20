@@ -1,7 +1,7 @@
 "use strict";
 let interactive_width = 900;
 let interactive_height = 450;
-let interactive_padding = 30;
+let interactive_padding = 50;
 
 let interactive = document.getElementById("chart1interactive");
 let chart1 = document.getElementById("chart1");
@@ -66,8 +66,8 @@ createXandYAxis();
 
 //Create "Year" on  X axis
 interactive_svg.append('text')
-.attr('x', width/2)
-.attr('y', height)
+.attr('x', interactive_width/2)
+.attr('y', interactive_height)
 .attr('text-anchor', 'middle')
 .style('font-family', 'Helvetica')
 .style('font-size', 'small')
@@ -75,9 +75,10 @@ interactive_svg.append('text')
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 interactive_svg.append('text')
-.attr('x', 5)
+.attr('x', -(interactive_height / 2))
 .attr('y', 10)
-.attr('text-anchor', 'left')
+.attr('text-anchor', 'middle')
+.attr('transform', 'rotate(270)')
 .style('font-family', 'Helvetica')
 .style('font-size', 'small')
 .text('Food waste per capita (kg/year)');
@@ -89,9 +90,9 @@ function interactiveTitle(category) {
 interactive_svg.selectAll(".interactiveTitle").remove();
 
 // Create "___ Food Waste Per Capita" based on selection
-let tempText = category + " Food Waste Per Capita"
+let tempText = category + " Food Waste Per Capita in Australia"
 interactive_svg.append('text')
-.attr('x', width / 2)
+.attr('x', interactive_width / 2)
 .attr('y', 12)
 .attr('class', 'interactiveTitle')
 .attr('text-anchor', 'middle')
