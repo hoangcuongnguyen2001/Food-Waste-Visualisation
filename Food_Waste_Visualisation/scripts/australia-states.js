@@ -10,7 +10,7 @@ const projection = d3.geoMercator().center([132, -28]) // approximate geographic
                    .scale(1000);
 
 
-const second_color = d3.scaleQuantize().range(['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']);
+const second_color = d3.scaleQuantize().range(['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000']);
     
 const path = d3.geoPath().projection(projection);
 
@@ -36,7 +36,10 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
             var data_state = data[i].States;
             
             //Grab data value, and convert from string to float
-            var dataValue = parseFloat(data[i].Total);
+            var dataTotal = parseFloat(data[i].Total);
+            var dataEnergy = parseFloat(data[i].Energy_Recovery);
+            var dataDisposal = parseFloat(data[i].Disposal);
+            var dataRecycling = parseFloat(data[i].Recycling);
     
        
             for (var j = 0; j < json.features.length; j++) {
@@ -46,7 +49,7 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
                 if (data_state == json_state) {
             
                     //Copy the data value into the JSON
-                    json.features[j].properties.value = dataValue;
+                    json.features[j].properties.value = dataTotal;
                     
                     //Stop looking through the JSON
                     break;
@@ -55,12 +58,33 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
             }		
         }
 
+
+        // create tooltip
+        var second_tooltip = second_svg.append("g")
+                                       .attr("class", "tooltip")
+                                       .style("display", "none");
+    
+           second_tooltip.append("rect")
+                         .attr("width", 150)
+                         .attr("height", 20)
+                         .attr("fill", "gray")
+                         .style("opacity", 2);
+
+           second_tooltip.append("text")
+                        .attr("x", 15)
+                        .attr("dy", "1.2em")
+                        .style("text-anchor", "middle")
+                        .attr("font-size", "10px")
+                        .attr("font-weight", "bold");
+
+        
+
         second_svg.selectAll("path")
 			      .data(json.features)
-		          .enter()
+		        .enter()
 			      .append("path")
 			      .attr("d", path)
-				  .attr("class", "state")
+				    .attr("class", "state")
 			      .style("fill", function(d) {
 			      
 					//Get data value
@@ -73,42 +97,42 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
 					    //If value is undefined…
 					        return "#ccc";
 				        }
-			       });
+			       }).on('mouseover', function() {
+              second_tooltip.style("display", null);
+            })
+            .on("mousemove", function(d) {
+              second_tooltip.style("display", "block");
+              second_tooltip.select("text").text(d.properties.STATE_NAME + "/\n/" 
+              + "Amount of food waste per capita: " + d.properties.value + "(kg/year)");
+              second_tooltip.attr("transform", "translate(" + d3.mouse(this)[0] + "," +d3.mouse(this)[1] + ")");
+              d3.select(this).style("opacity", 1);
+            })
+            .on('mouseout', function(d) {
+                second_tooltip.style('display', 'none');
+                d3.selectAll(second_svg).style("opacity", 0.5);
+            });
 
             
 
 			// Write down state names...
-            second_svg.selectAll("text")
+            /*second_svg.selectAll("text")
 				.data(json.features)
 				.enter()
 				.append("text")
 				.attr("fill", "black")
 				.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 				.attr("text-anchor", "middle")
+                .style('font-family', 'Helvetica')
     			.attr("dy", ".3em")
 				.text(function(d) {
 					return d.properties.STATE_NAME;
-				});
-
-
-
-			// Create tooltip:
-			var second_tooltip = second_svg.append("g");
-
-            svg.selectAll(".state")
-                .on("mouseover", function(d) {
-                    second_tooltip.call(callout,
-                        format(data.get(d.Total)) 
-                    );
-                    d3.select(this).attr("stroke", "red").raise();
-                    })
-                .on("mousemove", function() {
-                    second_tooltip.attr("transform", "translate(" + d3.mouse(this)[0] + "," + d3.mouse(this)[1] + ")");
-                })
-                .on("mouseout", function() {
-                    second_tooltip.call(callout, null);
-                    d3.select(this).attr("stroke", null).lower();
-                });
+				});*/
+          
+        
+        
+        
+        //The color legend here based from Ronan Graham in Scott Logic:
+        //https://blog.scottlogic.com/2019/03/13/how-to-create-a-continuous-colour-range-legend-using-d3-and-d3fc.html
 
 			    const domain = second_color.domain();
                 const second_width = 100;
@@ -162,9 +186,12 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
                   .attr("visibility", "hidden");
                 
                 legendSvg.style("margin", "1em");
+                 
 
+                // Create label for the program.
+                const markingNumber = 990;
                 second_svg.append('text')
-                          .attr('x', 990)
+                          .attr('x', markingNumber)
                           .attr('y', 830)
                           .attr('text-anchor', 'middle')
                           .style('font-family', 'Helvetica')
@@ -172,20 +199,27 @@ d3.csv("data/Waste_Per_State_Per_Capita(1).csv").then(function(data) {
                           .text(d3.min(data, function(d) { return d.Total; }));
                 
                 second_svg.append('text')
-                          .attr('x', 990)
+                          .attr('x', markingNumber)
                           .attr('y', 695)
                           .attr('text-anchor', 'middle')
                           .style('font-family', 'Helvetica')
                           .style('font-size', '12px')
                           .text(d3.max(data, function(d) { return d.Total; }));
 
-			     /*second_svg.append('text')
-                          .attr('x', 900)
-                          .attr('y', 650)
-                          .attr('text-anchor', 'middle')
-                          .style('font-family', 'Helvetica')
-                          .style('font-size', '12px')
-                          .text("Amount of food waste per capita" +"\n" + "(kg/year)");*/
+			           const newLabel = second_svg.append('text')
+                                            .attr('text-anchor', 'middle')
+                                            .style('font-family', 'Helvetica')
+                                            .style('font-size', '12px');
+                          
+                       newLabel.append('svg:tspan')
+                               .attr('x', 940)
+                               .attr('y', 650)
+                               .text("Amount of food waste ");
+
+                       newLabel.append('svg:tspan')
+                               .attr('x', 940)
+                               .attr('y', 670)
+                               .text("per capita(kg/year)");
    });
 })
 
