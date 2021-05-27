@@ -42,3 +42,20 @@ footer p{
 
 footer p:first-child {text-align:left;}
 footer p:last-child { text-align:right;}
+
+.container {
+	display:inline-flex;
+	border-style:solid;
+	padding: 1.5rem;
+	margin: 0;
+	flex: flex;
+}
+
+.chart-visualisation {
+	padding-right: 1.5rem;
+	border-right: dashed;
+}
+
+.chart-explanation {
+	padding-left: 1.5rem;
+}
