@@ -1,5 +1,5 @@
 "use strict";
-let width = 900;
+let width = 1000;
 let height = 450;
 let padding = 50;
 
@@ -154,7 +154,7 @@ svg.selectAll("mydots")
   .data(first_stack)
   .enter()
   .append("circle")
-    .attr("cx", 750)
+    .attr("cx", 850)
     .attr("cy", function(d,i){ return 24 + i*(size+5);}) 
     .attr("r", 7)
     .style("fill", function(d,i){ return colors[i];});
@@ -164,7 +164,7 @@ svg.selectAll("mylabels")
   .data(first_stack)
   .enter()
   .append("text")
-    .attr("x", 750 + size*1.2)
+    .attr("x", 850 + size*1.2)
     .attr("y", function(d,i){ return 22 + i*(size+5) + (size/2);}) 
     .text(d => d)
     .style("fill", (d, i) => colors[i])
