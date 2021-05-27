@@ -1,5 +1,5 @@
 "use strict";
-let interactive_width = 900;
+let interactive_width = 1000;
 let interactive_height = 450;
 let interactive_padding = 50;
 
