@@ -1,3 +1,6 @@
+//Created with help from Michael Rovinsky:
+//https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199#67718199
+
 const second_width = 1000;
 const second_height = 850;
 
@@ -13,11 +16,10 @@ const projection = d3.geoMercator()
 
 
 //Define path generator
-const path = d3.geoPath()
-    .projection(projection);
+const path = d3.geoPath().projection(projection);
 
-const second_color = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9'];
-
+const second_color =  d3.scaleQuantize().domain([118,237])
+                        .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#b10026']);
 
 //Create SVG
 const second_svg = d3.select("#chart2")
@@ -41,7 +43,9 @@ const states = second_svg.selectAll('g.state')
     states.append('path')
         .attr("d", path)
         .attr("stroke", 'white')
-        .attr("fill", (d, i) => second_color[i]);;
+        .attr("fill", (d, i) => second_color[i]);
+
+    
                   
     states.append("text")
             .attr("fill", "darkslategray")
@@ -54,7 +58,7 @@ const states = second_svg.selectAll('g.state')
 
 
 
-d3.json('https://api.jsonbin.io/b/60af2dc3d0f4985540524d62')
+d3.json('data/Waste_Per_State_Per_Capita.json')
     .then(dataJson => onDataJsonLoaded(dataJson))
     .catch(err => console.log('ERR: ', err));
   
@@ -83,38 +87,42 @@ const tooltipPath = (width, height, offset, radius) => {
 }
 
 const onDataJsonLoaded = json => {
-  console.log('DATA: ', json);
   
-  const rows = Object.keys(json[0]).filter(n => n !== 'State');
+  const rows = Object.keys(json[0]).filter(n => n !== 'States');
   
   const second_tooltip = second_svg.append('g')
                                    .classed('tooltip', true)
                                    .style('visibility', 'hidden');
 
   second_tooltip.append('path')
-                .attr('d', tooltipPath(150, 80, 5, 5))
+                .attr('d', tooltipPath(200, 80, 5, 5))
   rows.forEach((row, index) => {
+
     second_tooltip.append('text')
                   .text(`${row} :`)
                   .attr('x', -70)
                   .attr('y', -68 + index * 18);
     second_tooltip.append('text')
                   .classed(row.replace(' ', '_'), true)
-                  .attr('x', 40)
+                  .attr('x', 30)
+                  .attr('y', -68 + index * 18);
+     second_tooltip.append('text')
+                  .text(`(kg/year)`)
+                  .attr('x', 50)
                   .attr('y', -68 + index * 18);
     });
+
     
   second_svg.selectAll('g.state')
     .on('mouseover', d => {
-      const stateData = json.find(s => s.State == d.properties.STATE_NAME);
-      rows.forEach(function(row) {
-          return second_tooltip.select(`.${row.replace(' ', '_')}`).text(stateData[row]);
-      });
+      const stateData = json.find(s => s.States == d.properties.STATE_NAME);
+      rows.forEach(row => second_tooltip.select(`.${row.replace(' ', '_')}`).text(stateData[row]));
       second_tooltip.attr('transform', `translate(${path.centroid(d)})`);
       second_tooltip.style('visibility', 'visible');
     })
-    .on('mouseout', () => second_tooltip.style('visibility', 'hidden'));
+    .on('mouseout', () => tooltip.style('visibility', 'hidden'));
 };
+
 
 
 
