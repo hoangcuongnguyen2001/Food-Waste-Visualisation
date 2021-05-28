@@ -58,4 +58,18 @@ footer p:last-child { text-align:right;}
 
 .chart-explanation {
 	padding-left: 1.5rem;
+	font-size: small;
+	font-family: Verdana, sans-serif;
+}
+
+.tooltip > path {
+  fill: white;
+  stroke: black;
+}
+
+.tooltip > text {
+  font-family: "Ubuntu";
+  font-size: 12px;
+  fill: black;
+  stroke: none;
 }
