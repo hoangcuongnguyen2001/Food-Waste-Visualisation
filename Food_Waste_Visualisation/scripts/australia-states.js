@@ -18,7 +18,7 @@ const projection = d3.geoMercator()
 //Define path generator
 const path = d3.geoPath().projection(projection);
 
-const second_color =  d3.scaleQuantize().domain([118,237])
+const second_color =  d3.scaleQuantize()
                         .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#b10026']);
 
 //Create SVG
@@ -40,10 +40,58 @@ const states = second_svg.selectAll('g.state')
                          .append('g')
                          .classed('state', true);
 
+
+d3.csv('data/Waste_Per_State_Per_Capita(1).csv').then(function(data) {
+
+  second_color.domain([
+		d3.min(data, function(d) { return d.Total; }), 
+		d3.max(data, function(d) { return d.Total; })
+	]);
+
+        for (var i = 0; i < data.length; i++) {
+    
+            
+            var data_States = data[i].States;
+           
+            
+            var dataValue = parseFloat(data[i].Total);
+
+            for (var j = 0; j < json.features.length; j++) {
+            
+                var json_States = json.features[j].properties.STATE_NAME;
+    
+                if (data_States == json_States) {
+            
+                    json.features[j].properties.value = dataValue;
+                    
+                    //Stop looking through the JSON
+                    break;
+                    
+                }
+            }		
+        }
+      })
+
+      
+
+
     states.append('path')
         .attr("d", path)
         .attr("stroke", 'white')
-        .attr("fill", (d, i) => second_color[i]);
+        .attr("fill", function(d) {
+
+            const value = d.properties.value;
+            
+            console.log(d.properties);
+                     
+            if (value) {
+
+              return second_color(value);
+            } else {
+
+              return "#ccc";
+            }
+          });
 
     
                   
@@ -55,7 +103,6 @@ const states = second_svg.selectAll('g.state')
             .text(function(d) {
                  return d.properties.STATE_NAME;
             });
-
 
 
 d3.json('data/Waste_Per_State_Per_Capita.json')
@@ -114,13 +161,13 @@ const onDataJsonLoaded = json => {
 
     
   second_svg.selectAll('g.state')
-    .on('mouseover', d => {
+    .on('mouseenter', d => {
       const stateData = json.find(s => s.States == d.properties.STATE_NAME);
       rows.forEach(row => second_tooltip.select(`.${row.replace(' ', '_')}`).text(stateData[row]));
       second_tooltip.attr('transform', `translate(${path.centroid(d)})`);
       second_tooltip.style('visibility', 'visible');
     })
-    .on('mouseout', () => tooltip.style('visibility', 'hidden'));
+    .on('mouseleave', () => tooltip.style('visibility', 'hidden'));
 };
 
 
