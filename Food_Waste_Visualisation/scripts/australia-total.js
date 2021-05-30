@@ -24,7 +24,7 @@ let svg = d3.select("#chart1")
             .attr("width", width)
             .attr("height", height);
 
-const colors = ['green', 'blue', 'orange'];
+const colors = ['#9e9cc2', '#a17724', '#383745'];
 
 
 let xScale = d3.scaleBand()
@@ -159,9 +159,11 @@ svg.selectAll("mydots")
     .attr("r", 7)
     .style("fill", function(d,i){ return colors[i];});
 
+
+let new_stack = ["Recycling", "Energy recovery" , "Disposal"]
 // Add one dot in the legend for each name.
 svg.selectAll("mylabels")
-  .data(first_stack)
+  .data(new_stack)
   .enter()
   .append("text")
     .attr("x", 850 + size*1.2)

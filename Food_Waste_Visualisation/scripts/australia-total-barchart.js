@@ -39,7 +39,7 @@ interactive_svg.selectAll("rect")
             .attr("y", function(d) {return interactive_yScale(d);})
             .attr("width", interactive_xScale.bandwidth())
             .attr("height", function(d) {return interactive_height - interactive_padding - interactive_yScale(d);})
-            .attr("fill", "blue")
+            .attr("fill", '#383745')
             .on("mouseover", function(d) {
                 const interactive_xPosition = parseFloat(d3.select(this).attr("x")) + interactive_xScale.bandwidth() / 2;
                 const interactive_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
@@ -112,7 +112,7 @@ d3.select("#energyrecovery")
                 interactive_svg.selectAll(".axis").remove();
                 interactiveXandYScale();
                 interactiveXandYAxis();
-                fillRect("blue");
+                fillRect("#a17724");
                 createXandYAxis();
                 interactiveTitle("Energy Recovery");
             });
@@ -125,7 +125,7 @@ d3.select("#disposal")
                 interactive_svg.selectAll(".axis").remove();
                 interactiveXandYScale();
                 interactiveXandYAxis();
-                fillRect("orange");
+                fillRect("#383745");
                 createXandYAxis();
                 interactiveTitle("Disposal");
             });
@@ -138,7 +138,7 @@ d3.select("#recycling")
                 interactive_svg.selectAll(".axis").remove();
                 interactiveXandYScale();
                 interactiveXandYAxis();
-                fillRect("green");
+                fillRect("#9e9cc2");
                 createXandYAxis();
                 interactiveTitle("Recycling");
             });
