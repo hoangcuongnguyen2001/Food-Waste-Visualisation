@@ -189,7 +189,7 @@ function sortAscending() {
               const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
               const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
    
-              third_svg.append("text")
+   third_svg.append("text")
                        .attr("id", "tooltip")
                        .attr("x", third_xPosition)
                        .attr("y", third_yPosition)
@@ -225,7 +225,7 @@ function sortDescending() {
          .attr("transform", "translate(0,"+ (third_height - third_padding) + ")")
          .call(third_xAxis);
    
-         third_svg.selectAll("rect")
+   third_svg.selectAll("rect")
          .data(sortedValues)
            .enter()
            .append("rect")
