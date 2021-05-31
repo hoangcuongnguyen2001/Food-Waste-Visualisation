@@ -102,7 +102,7 @@ const onDataJsonLoaded = json => {
   new_states.select('path')
     .style('fill', d => {
         const stateData = json.find(s => s.States === d.properties.STATE_NAME);
-      return stateData ? second_color(stateData.Total) : 'white';
+      return stateData ? second_color(stateData.Total) : '#ccc';
     })
   
   const rows = Object.keys(json[0]).filter(n => n !== 'States');
@@ -152,19 +152,20 @@ var legendLinear = d3.legendColor()
 
 
 second_svg.select(".legendLinear")
-          .call(legendLinear);
+          .call(legendLinear)
+          .style('font-family', 'Helvetica');
           
 };
 
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 second_svg.append('text')
-.attr('x', -360)
-.attr('y', 20)
-.attr('text-anchor', 'middle')
-.attr('transform', 'rotate(270)')
-.style('font-family', 'Helvetica')
-.text('Food waste per capita (kg/year)');
+          .attr('x', -360)
+          .attr('y', 20)
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(270)')
+          .style('font-family', 'Helvetica')
+          .text('Food waste per capita (kg/year)');
 
 
 // Create name for the map.
