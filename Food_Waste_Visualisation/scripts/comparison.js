@@ -1,38 +1,56 @@
 "use strict";
+// Text Countries above Graphs
+    function sortCountries(countries, values, sort) {
+
+      if(sort != "none") {
+         let inputCountries = [...countries];
+         let inputValues = [...values];
+
+         if (sort == "asc") {
+            var sortedValues = [...values].sort(function(a,b) {return a - b;});
+         } else {
+            var sortedValues = [...values].sort(function(a,b) {return b - a;});
+         }
+         const sortedCountries = sortedValues.map(val => {
+            const index = inputValues.findIndex(function(v) {return v === val;});
+            const country = inputCountries[index];
+            inputValues = [...inputValues.slice(0, index), ...inputValues.slice(index + 1)]
+            inputCountries =  [...inputCountries.slice(0, index), ...inputCountries.slice(index + 1)]
+            return country;
+         })
+         return {sortedCountries, sortedValues};
+      }
+
+      else {
+         const sortedValues = values;
+         const sortedCountries = countries;
+         return {sortedCountries, sortedValues};
+      }
+   }
+
    const third_width = 1000;
    const third_height = 500;
    const third_padding = 50;
   	
-   const third_data = [{id: 1, Country: "Australia", HouseholdWaste: 102},
-                        {id: 2, Country: "Austria", HouseholdWaste: 39},
-                        {id: 3, Country: "Belgium", HouseholdWaste: 50},
-                        {id: 4, Country: "Denmark", HouseholdWaste: 81},
-                        {id: 5, Country: "Finland", HouseholdWaste: 65},
-                        {id: 6, Country: "France", HouseholdWaste: 85},
-                        {id: 7, Country: "Italy", HouseholdWaste: 67},
-                        {id: 8, Country: "Japan", HouseholdWaste: 64},
-                        {id: 9, Country: "Netherlands", HouseholdWaste: 50},
-                        {id: 10, Country: "New Zealand", HouseholdWaste: 61},
-                        {id: 11, Country: "Norway", HouseholdWaste: 79},
-                        {id: 12, Country: "Poland", HouseholdWaste: 56},
-                        {id: 13, Country: "Sweden", HouseholdWaste: 81},
-                        {id: 14, Country: "UK", HouseholdWaste: 77},
-                        {id: 15, Country: "USA", HouseholdWaste: 59}];
+   const third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
+   const third_data = [102, 39, 81, 50, 61, 79, 81, 77, 59, 64, 56, 65, 57, 85, 50];
+
+   var sort = "none";
+   var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
 
 //set up xScale, yScale, x- and y-axis.
    const third_xScale = d3.scaleBand()
-	                 .domain(d3.range(third_data.length))
+	                 .domain(d3.range(sortedValues.length))
 	                 .rangeRound([third_padding ,third_width])
 	                 .paddingInner(0.1)
                     .paddingOuter(0.1);
 
    const third_yScale = d3.scaleLinear()
-                     //.domain([0, d3.max(third_data)])
                      .domain([0, 120])
 	                  .range([third_height - third_padding, third_padding]);
 
    const third_xAxis = d3.axisBottom()
-					     .scale(third_xScale).tickValues([]);
+					     .scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
    const third_yAxis = d3.axisLeft()
                     .scale(third_yScale).ticks(5);
 
@@ -43,28 +61,26 @@
                   .attr("width", third_width)
                   .attr("height", third_height);
 
-
 // For the creation of a color scale.
    const fixed_color = 10000;
-//const colorScale = d3.scaleSequential(d3.interpolatePlasma)
-                   // .domain([d3.min(third_data), d3.max(third_data)]);;
+
 //Create tooltip for the chart.
 
    third_svg.selectAll("rect")
-	         .data(third_data)
+	         .data(sortedValues)
   	         .enter()
   	         .append("rect")
   	         .attr("x", function(d, i) {
   	              return third_xScale(i);
   	          })
             .attr("y", function(d) {
-  	             return third_yScale(d.HouseholdWaste);
+  	             return third_yScale(d);
   	         })
             .attr("width", third_xScale.bandwidth())
   	         .attr("height", function(d) {
-  	              return third_height - third_padding - third_yScale(d.HouseholdWaste);
+  	              return third_height - third_padding - third_yScale(d);
   	         })
-  	         .attr("fill", d => `rgb(0, 0, ${fixed_color / d.HouseholdWaste})`)
+  	         .attr("fill", d => `rgb(0, 0, ${fixed_color / d})`)
    
             .on("mouseover", function(d) {
                  const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
@@ -79,39 +95,15 @@
                           .attr("font-size", "11px")
                           .attr("font-weight", "bold")
                           .attr("fill", "white")
-                          .text(d.HouseholdWaste);
+                          .text(d);
               third_svg.selectAll("rect").style("opacity", 0.5);
               d3.select(this).style("opacity", 1);
             })
              .on("mouseout", function() { 
-      //return to normal.
+                  //return to normal.
                  third_svg.select("#tooltip").remove(); 
                  third_svg.selectAll("rect").style("opacity", 1);
               });
-
-// Text Countries above Graphs
-function AddCountryName() {
-   third_svg.selectAll("text")
-   .data(third_data)
-   .enter()
-   .append("text")
-   .text(function(d) {
-      return d.Country;
-   })
-   .attr("text-anchor", "middle")
-   .attr("x", function(d, i) {
-         return third_xScale(i) + third_xScale.bandwidth() / 2;
-   })
-   .attr("y", function(d) {
-         return third_yScale(d.HouseholdWaste) - 5;
-   })
-   .attr("class", "country")
-   .attr("font-family", "sans-serif")
-   .attr("font-size", "11px")
-   .attr("fill", "black");
-}
-
-AddCountryName();
 
 //Draw global average line
   third_svg.append("line")
@@ -152,6 +144,7 @@ third_svg.append('text')
 // Drawing axes.
    third_svg.append("g")
          .attr("class", "axis")
+         .attr("id", "xaxis")
          .attr("transform", "translate(0,"+ (third_height - third_padding) + ")")
          .call(third_xAxis);
 
@@ -162,53 +155,114 @@ third_svg.append('text')
 
 // Sort Ascending
 function sortAscending() {
-    
-   third_svg.selectAll("rect")
-            .sort(function(a, b) {
-                 return d3.ascending(a.HouseholdWaste, b.HouseholdWaste);
-            })
-            .attr("x", function(d, i) {
-                 return third_xScale(i);
-            });
-            third_svg.selectAll(".country").remove();
-            AddCountryName();
-            third_svg.on("mouseover", function(d) {
-               const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
-               const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
-    
-               third_svg.append("text")
-                        .attr("id", "tooltip")
-                        .attr("x", third_xPosition)
-                        .attr("y", third_yPosition)
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", "11px")
-                        .attr("font-weight", "bold")
-                        .attr("fill", "white")
-                        .text(d.HouseholdWaste);
-             third_svg.selectAll("rect").style("opacity", 0.5);
-             d3.select(this).style("opacity", 1.5);
-          })
-           .on("mouseout", function() { 
-    //return to normal.
-               third_svg.select("#tooltip").remove(); 
-               third_svg.selectAll("rect").style("opacity", 1);
-            });
+   sort = "asc";
+   var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
+
+   var third_xAxis = d3.axisBottom()
+         .scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
+   third_svg.selectAll("rect").remove();
+   third_svg.select("#xaxis").remove();
+
+   third_svg.append("g")
+         .attr("class", "axis")
+         .attr("id", "xaxis")
+         .attr("transform", "translate(0,"+ (third_height - third_padding) + ")")
+         .call(third_xAxis);
    
+         third_svg.selectAll("rect")
+         .data(sortedValues)
+           .enter()
+           .append("rect")
+           .attr("x", function(d, i) {
+                return third_xScale(i);
+            })
+         .attr("y", function(d) {
+               return third_yScale(d);
+           })
+         .attr("width", third_xScale.bandwidth())
+           .attr("height", function(d) {
+                return third_height - third_padding - third_yScale(d);
+           })
+           .attr("fill", d => `rgb(0, 0, ${fixed_color / d})`)
+
+         .on("mouseover", function(d) {
+              const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
+              const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
+   
+              third_svg.append("text")
+                       .attr("id", "tooltip")
+                       .attr("x", third_xPosition)
+                       .attr("y", third_yPosition)
+                       .attr("text-anchor", "middle")
+                       .attr("font-family", "sans-serif")
+                       .attr("font-size", "11px")
+                       .attr("font-weight", "bold")
+                       .attr("fill", "white")
+                       .text(d);
+           third_svg.selectAll("rect").style("opacity", 0.5);
+           d3.select(this).style("opacity", 1);
+         })
+          .on("mouseout", function() { 
+               //return to normal.
+              third_svg.select("#tooltip").remove(); 
+              third_svg.selectAll("rect").style("opacity", 1);
+           });
 }
 
 // Sort descending
 function sortDescending() {
+   sort = "desc";
+   var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
+
+   var third_xAxis = d3.axisBottom()
+         .scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
+   third_svg.selectAll("rect").remove();
+   third_svg.select("#xaxis").remove();
+
+   third_svg.append("g")
+         .attr("class", "axis")
+         .attr("id", "xaxis")
+         .attr("transform", "translate(0,"+ (third_height - third_padding) + ")")
+         .call(third_xAxis);
    
-   third_svg.style("display", "default");
-   
-   third_svg.selectAll("rect")
-            .sort(function(a, b) {
-                 return d3.descending(a.HouseholdWaste, b.HouseholdWaste);
+         third_svg.selectAll("rect")
+         .data(sortedValues)
+           .enter()
+           .append("rect")
+           .attr("x", function(d, i) {
+                return third_xScale(i);
             })
-            .attr("x", function(d, i) {
-                 return third_xScale(i);
-            });
+         .attr("y", function(d) {
+               return third_yScale(d);
+           })
+         .attr("width", third_xScale.bandwidth())
+           .attr("height", function(d) {
+                return third_height - third_padding - third_yScale(d);
+           })
+           .attr("fill", d => `rgb(0, 0, ${fixed_color / d})`)
+
+         .on("mouseover", function(d) {
+              const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
+              const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
+   
+              third_svg.append("text")
+                       .attr("id", "tooltip")
+                       .attr("x", third_xPosition)
+                       .attr("y", third_yPosition)
+                       .attr("text-anchor", "middle")
+                       .attr("font-family", "sans-serif")
+                       .attr("font-size", "11px")
+                       .attr("font-weight", "bold")
+                       .attr("fill", "white")
+                       .text(d);
+           third_svg.selectAll("rect").style("opacity", 0.5);
+           d3.select(this).style("opacity", 1);
+         })
+          .on("mouseout", function() { 
+               //return to normal.
+              third_svg.select("#tooltip").remove(); 
+              third_svg.selectAll("rect").style("opacity", 1);
+           });
 }		
 
 // Global Waste Text
@@ -225,11 +279,11 @@ d3.select("#sortascending").on("click", function() {
    sortAscending();
    third_svg.selectAll(".globalWaste").remove();
    GlobalWasteText(200);
-})
+});
 
 // Sort Descending button
 d3.select("#sortdescending").on("click", function() { 
    sortDescending();
    third_svg.selectAll(".globalWaste").remove();
    GlobalWasteText(520);
-})
+});
