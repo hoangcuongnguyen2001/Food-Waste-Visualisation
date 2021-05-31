@@ -28,7 +28,8 @@ const second_svg = d3.select("#chart2")
     .attr("height", second_height);
 
 //Load in GeoJSON data
-d3.json('https://gist.githubusercontent.com/GerardoFurtado/02aa65e5522104cb692e/raw/8108fbd4103a827e67444381ff594f7df8450411/aust.json')
+
+d3.json('data/aust.json')
     .then(json => onGeoJsonLoaded(json))
     .catch(err => console.log('ERROR: ', err));
   
@@ -40,63 +41,15 @@ const states = second_svg.selectAll('g.state')
                          .append('g')
                          .classed('state', true);
 
-
-d3.csv('data/Waste_Per_State_Per_Capita(1).csv').then(function(data) {
-
-  second_color.domain([
-		d3.min(data, function(d) { return d.Total; }), 
-		d3.max(data, function(d) { return d.Total; })
-	]);
-
-        for (var i = 0; i < data.length; i++) {
-    
-            
-            var data_States = data[i].States;
-           
-            
-            var dataValue = parseFloat(data[i].Total);
-
-            for (var j = 0; j < json.features.length; j++) {
-            
-                var json_States = json.features[j].properties.STATE_NAME;
-    
-                if (data_States == json_States) {
-            
-                    json.features[j].properties.value = dataValue;
-                    
-                    //Stop looking through the JSON
-                    break;
-                    
-                }
-            }		
-        }
-      })
-
-      
-
-
     states.append('path')
         .attr("d", path)
-        .attr("stroke", 'white')
-        .attr("fill", function(d) {
-
-            const value = d.properties.value;
-            
-            console.log(d.properties);
-                     
-            if (value) {
-
-              return second_color(value);
-            } else {
-
-              return "#ccc";
-            }
-          });
+        .attr("stroke", 'white');
 
     
                   
     states.append("text")
-            .attr("fill", "darkslategray")
+            .attr("fill", "lightblue")
+            .attr("font-size", "small")
             .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
             .attr("text-anchor", "middle")
             .attr("dy", 15)
@@ -134,6 +87,23 @@ const tooltipPath = (width, height, offset, radius) => {
 }
 
 const onDataJsonLoaded = json => {
+
+  // Loading color scheme.
+  const valueRange = json.reduce((r, s) => r ? 
+    [Math.min(r[0], s.Total), Math.max([1], s.Total)] :
+    [s.Total, s.Total], null);
+  
+  const second_color = d3.scaleLinear()
+    .domain(valueRange)
+    .range(["#FF0000", "#800000"]);
+    
+  const new_states = second_svg.selectAll('g.state');
+    
+  new_states.select('path')
+    .style('fill', d => {
+        const stateData = json.find(s => s.States === d.properties.STATE_NAME);
+      return stateData ? second_color(stateData.Total) : 'white';
+    })
   
   const rows = Object.keys(json[0]).filter(n => n !== 'States');
   
@@ -142,7 +112,7 @@ const onDataJsonLoaded = json => {
                                    .style('visibility', 'hidden');
 
   second_tooltip.append('path')
-                .attr('d', tooltipPath(200, 80, 5, 5))
+                .attr('d', tooltipPath(160, 80, 5, 5))
   rows.forEach((row, index) => {
 
     second_tooltip.append('text')
@@ -153,24 +123,48 @@ const onDataJsonLoaded = json => {
                   .classed(row.replace(' ', '_'), true)
                   .attr('x', 30)
                   .attr('y', -68 + index * 18);
-     second_tooltip.append('text')
-                  .text(`(kg/year)`)
-                  .attr('x', 50)
-                  .attr('y', -68 + index * 18);
     });
 
     
   second_svg.selectAll('g.state')
-    .on('mouseenter', d => {
+    .on('mousemove', d => {
       const stateData = json.find(s => s.States == d.properties.STATE_NAME);
       rows.forEach(row => second_tooltip.select(`.${row.replace(' ', '_')}`).text(stateData[row]));
       second_tooltip.attr('transform', `translate(${path.centroid(d)})`);
       second_tooltip.style('visibility', 'visible');
     })
-    .on('mouseleave', () => tooltip.style('visibility', 'hidden'));
+    .on('mouseout', () => second_tooltip.style('visibility', 'hidden'));
+
+    
+
+// Hint from Susan Lu website: https://d3-legend.susielu.com/
+// Note: To create this choropleth, you need to use another JavaScript file as a website here:
+// https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js
+second_svg.append("g")
+  .attr("class", "legendLinear")
+  .attr("transform", "translate(30,300)");
+
+var legendLinear = d3.legendColor()
+                     .shapeWidth(30)
+                     .cells([118, 123, 156, 173, 185, 203, 221, 237])
+                     .orient('vertical')
+                     .scale(second_color);
+
+
+second_svg.select(".legendLinear")
+          .call(legendLinear);
+          
 };
 
 
+//Create "Food waste per capita (kg/year)" on Y Axis
+second_svg.append('text')
+.attr('x', -360)
+.attr('y', 20)
+.attr('text-anchor', 'middle')
+.attr('transform', 'rotate(270)')
+.style('font-family', 'Helvetica')
+.text('Food waste per capita (kg/year)');
 
 
 // Create name for the map.
