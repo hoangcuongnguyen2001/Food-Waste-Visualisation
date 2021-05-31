@@ -2,7 +2,7 @@
 //https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199#67718199
 
 const second_width = 1000;
-const second_height = 850;
+const second_height = 750;
 
 //Define map projection // geoEqualEarth
 
@@ -12,7 +12,7 @@ const second_height = 850;
 const projection = d3.geoMercator()
                      .center([ 132, -28 ])
                      .translate([ second_width/2, second_height/2 ])
-                     .scale(1000);
+                     .scale(850);
 
 
 //Define path generator
