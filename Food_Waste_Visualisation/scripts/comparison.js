@@ -14,6 +14,8 @@
          const sortedCountries = sortedValues.map(function(val) {
             const index = inputValues.findIndex(function(v) {return v === val;});
             const country = inputCountries[index];
+            inputValues = [...inputValues.slice(0, index), ...inputValues.slice(index + 1)]
+            inputCountries = [...inputCountries.slice(0, index), ...inputCountries.slice(index + 1)]
             return country;
          })
          return {sortedCountries, sortedValues};
@@ -28,10 +30,9 @@
    const third_width = 1000;
    const third_height = 500;
    const third_padding = 50;
-  	
-   const third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", 
-                           "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
-   const third_data = [102, 39, 81, 50, 61, 79, 81, 77, 59, 64, 56, 65, 57, 85, 50];
+   
+   const third_countries = ["Australia", "Austria", "Belgium", "Denmark", "Finland", "France", "Italy", "Japan", "Netherlands","New Zealand", "Norway", "Poland", "Sweden", "UK","USA",]
+   const third_data = [102, 39, 50, 81, 50, 85, 65, 57, 64, 61, 79, 56, 81, 77, 59,];
 
    var sort = "none";
    var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
@@ -112,7 +113,7 @@ createChart(sortedValues);
            .attr("y1", third_yScale(74))
            .attr("y2", third_yScale(74));
 
-GlobalWasteText(520);
+GlobalWasteText(400);
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 third_svg.append('text')
