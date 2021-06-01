@@ -1,5 +1,5 @@
 "use strict";
-// Text Countries above Graphs
+// Sorting Countries for CSV file. _
     function sortCountries(countries, values, sort) {
 
       if(sort != "none") {
@@ -29,7 +29,8 @@
    const third_height = 500;
    const third_padding = 50;
   	
-   const third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
+   const third_countries = ["Australia", "Austria", "Denmark", "Netherlands","New Zealand", "Norway", 
+                           "Sweden", "UK","USA","Japan","Poland","Finland","Italy","France","Belgium"]
    const third_data = [102, 39, 81, 50, 61, 79, 81, 77, 59, 64, 56, 65, 57, 85, 50];
 
    var sort = "none";
@@ -59,7 +60,7 @@
                   .attr("height", third_height);
 
 // For the creation of a color scale.
-   const fixed_color = 10000;
+   const fixed_color = 12000;
 
 //Create tooltip for the chart.
 function createChart(values) {
@@ -77,7 +78,7 @@ function createChart(values) {
   	         .attr("height", function(d) {
   	              return third_height - third_padding - third_yScale(d);
   	         })
-  	         .attr("fill", d => `rgb(0, 0, ${fixed_color / d})`)
+  	         .attr("fill", d => `rgb(${fixed_color / (d * 3)}, ${fixed_color / (d * 2)} , ${fixed_color / d})`)
             .on("mouseover", function(d) {
                  const third_xPosition = parseFloat(d3.select(this).attr("x")) + third_xScale.bandwidth() / 2;
                  const third_yPosition = parseFloat(d3.select(this).attr("y")) + 14;
@@ -170,7 +171,7 @@ function redrawGraph(xAxis, values) {
    third_svg.select("#xaxis").remove();
    DrawXAxis(xAxis);
    createChart(values);
-}
+}  
 
 // Sort Ascending
 function sortAscending() {
