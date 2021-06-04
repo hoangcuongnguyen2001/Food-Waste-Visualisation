@@ -2,7 +2,7 @@
 //https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199#67718199
 
 const second_width = 1000;
-const second_height = 750;
+const second_height = 850;
 
 //Define map projection // geoEqualEarth
 
@@ -12,7 +12,7 @@ const second_height = 750;
 const projection = d3.geoMercator()
                      .center([ 132, -28 ])
                      .translate([ second_width/2, second_height/2 ])
-                     .scale(850);
+                     .scale(1000);
 
 
 //Define path generator
@@ -44,9 +44,7 @@ const states = second_svg.selectAll('g.state')
     states.append('path')
         .attr("d", path)
         .attr("stroke", 'white');
-
-    
-                  
+     
     states.append("text")
             .attr("fill", "lightblue")
             .attr("font-size", "small")
@@ -61,8 +59,6 @@ const states = second_svg.selectAll('g.state')
 d3.json('data/Waste_Per_State_Per_Capita.json')
     .then(dataJson => onDataJsonLoaded(dataJson))
     .catch(err => console.log('ERR: ', err));
-  
- 
 }
 
 const tooltipPath = (width, height, offset, radius) => {
@@ -125,7 +121,6 @@ const onDataJsonLoaded = json => {
                   .attr('y', -68 + index * 18);
     });
 
-    
   second_svg.selectAll('g.state')
     .on('mousemove', d => {
       const stateData = json.find(s => s.States == d.properties.STATE_NAME);
@@ -134,8 +129,6 @@ const onDataJsonLoaded = json => {
       second_tooltip.style('visibility', 'visible');
     })
     .on('mouseout', () => second_tooltip.style('visibility', 'hidden'));
-
-    
 
 // Hint from Susan Lu website: https://d3-legend.susielu.com/
 // Note: To create this choropleth, you need to use another JavaScript file as a website here:
@@ -150,13 +143,11 @@ var legendLinear = d3.legendColor()
                      .orient('vertical')
                      .scale(second_color);
 
-
 second_svg.select(".legendLinear")
           .call(legendLinear)
           .style('font-family', 'Helvetica');
           
 };
-
 
 //Create "Food waste per capita (kg/year)" on Y Axis
 second_svg.append('text')
@@ -166,7 +157,6 @@ second_svg.append('text')
           .attr('transform', 'rotate(270)')
           .style('font-family', 'Helvetica')
           .text('Food waste per capita (kg/year)');
-
 
 // Create name for the map.
 second_svg.append('text')

@@ -1,3 +1,6 @@
+// Created partially with the help of Michael Rovinsky:
+// https://stackoverflow.com/questions/67518899/bar-chart-how-could-i-align-the-data-with-countries-when-sorting-in-d3-v5/67529684
+
 "use strict";
 // Sorting Countries for CSV file. _
     function sortCountries(countries, values, sort) {
@@ -49,7 +52,7 @@
 	                  .range([third_height - third_padding, third_padding]);
 
    const third_xAxis = d3.axisBottom()
-					     .scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
+					     .scale(third_xScale).tickValues([]);
    const third_yAxis = d3.axisLeft()
                     .scale(third_yScale).ticks(5);
 
@@ -116,14 +119,14 @@ createChart(sortedValues);
 GlobalWasteText(400);
 
 //Create "Food waste per capita (kg/year)" on Y Axis
-third_svg.append('text')
-         .attr('x', -(third_height / 2))
-         .attr('y', 10)
-         .attr('text-anchor', 'middle')
-         .attr('transform', 'rotate(270)')
-         .style('font-family', 'Helvetica')
-         .style('font-size', 'small')
-         .text('Food waste per capita (kg/year)');
+   third_svg.append('text')
+            .attr('x', -(third_height / 2))
+            .attr('y', 10)
+            .attr('text-anchor', 'middle')
+            .attr('transform', 'rotate(270)')
+            .style('font-family', 'Helvetica')
+            .style('font-size', 'small')
+            .text('Food waste per capita (kg/year)');
 
 // Create "Country Household Food waste per capita (kg/year)" as title
    third_svg.append("text")
@@ -151,6 +154,31 @@ function GlobalWasteText(pixels) {
             .text("Global average of household food waste");
 }
 
+// Drawing Countries Above Each Bar
+function AddCountries(values, countries) {
+   third_svg.selectAll(".countries").remove();
+
+   third_svg.selectAll(".countries")
+   .data(values, function(d) {
+      return d;
+   })
+   .enter()
+   .append("text")
+   .attr("class","countries")
+   .attr("text-anchor", "middle")
+   .attr("font-size", "10px")
+   .attr("x", function(d,i) {
+      return third_xScale(i) + 27;
+   })
+   .attr("y", function(d) {
+      return third_yScale(d) - 3;
+   })
+   .text(function(d, i) {
+      return countries[i];
+   })
+}
+AddCountries(sortedValues, sortedCountries);
+
 // Drawing axes.
 function DrawXAxis(xAxis) {
    third_svg.append("g")
@@ -167,29 +195,24 @@ DrawXAxis(third_xAxis);
          .call(third_yAxis);
 
 // Redraw Graph
-function redrawGraph(xAxis, values) {
+function redrawGraph(values, countries) {
    third_svg.selectAll("rect").remove();
-   third_svg.select("#xaxis").remove();
-   DrawXAxis(xAxis);
    createChart(values);
+   AddCountries(values, countries)
 }  
 
 // Sort Ascending
 function sortAscending() {
    sort = "asc";
    var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
-
-   var third_xAxis = d3.axisBottom().scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
-   redrawGraph(third_xAxis, sortedValues);
+   redrawGraph(sortedValues, sortedCountries);
 }
 
 // Sort descending
 function sortDescending() {
    sort = "desc";
    var {sortedCountries, sortedValues} = sortCountries(third_countries, third_data, sort);
-
-   var third_xAxis = d3.axisBottom().scale(third_xScale).tickFormat(function(i) {return sortedCountries[i];})
-   redrawGraph(third_xAxis, sortedValues);
+   redrawGraph(sortedValues, sortedCountries);
 }		
 
 // Sort Ascending button

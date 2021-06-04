@@ -159,7 +159,6 @@ svg.selectAll("mydots")
     .attr("r", 7)
     .style("fill", function(d,i){ return colors[i];});
 
-
 let new_stack = ["Recycling", "Energy recovery" , "Disposal"]
 // Add one dot in the legend for each name.
 svg.selectAll("mylabels")
