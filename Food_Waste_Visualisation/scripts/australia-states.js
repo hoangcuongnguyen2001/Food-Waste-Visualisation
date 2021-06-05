@@ -1,8 +1,5 @@
-//Created with help from Michael Rovinsky:
-//https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199#67718199
-
 const second_width = 1000;
-const second_height = 850;
+const second_height = 600;
 
 //Define map projection // geoEqualEarth
 
@@ -12,14 +9,11 @@ const second_height = 850;
 const projection = d3.geoMercator()
                      .center([ 132, -28 ])
                      .translate([ second_width/2, second_height/2 ])
-                     .scale(1000);
+                     .scale(700);
 
 
 //Define path generator
 const path = d3.geoPath().projection(projection);
-
-const second_color =  d3.scaleQuantize()
-                        .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#b10026']);
 
 //Create SVG
 const second_svg = d3.select("#chart2")
@@ -28,6 +22,9 @@ const second_svg = d3.select("#chart2")
     .attr("height", second_height);
 
 //Load in GeoJSON data
+
+//Created partially with help from Michael Rovinsky:
+//https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199#67718199
 
 d3.json('data/aust.json')
     .then(json => onGeoJsonLoaded(json))
