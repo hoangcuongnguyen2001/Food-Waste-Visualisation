@@ -158,4 +158,4 @@ second_svg.append('text')
           .attr('text-anchor', 'middle')
           .style('font-family', 'Helvetica')
           .style('font-size', '20px')
-          .text('Amount of food waste per capita in Australian states, 2019 (kg/year)');
+          .text('Amount of food waste per capita in Australian states, 2018-2019 (kg/year)');

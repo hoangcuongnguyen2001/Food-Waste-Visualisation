@@ -99,7 +99,7 @@ function interactiveTitle(category) {
                 .attr('class', 'interactiveTitle')
                 .attr('text-anchor', 'middle')
                 .style('font-family', 'Helvetica')
-                .style('font-size', '16px')
+                .style('font-size', '20px')
                 .text(tempText);
 }
 

@@ -134,7 +134,7 @@ svg.append('text')
     .attr('y', 12)
     .attr('text-anchor', 'middle')
     .style('font-family', 'Helvetica')
-    .style('font-size', '16px')
+    .style('font-size', '20px')
     .text('Overall Food Waste Per Capita in Australia');
 
 var size = 10;
