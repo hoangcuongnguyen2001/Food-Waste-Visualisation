@@ -92,15 +92,14 @@ function interactiveTitle(category) {
     interactive_svg.selectAll(".interactiveTitle").remove();
 
     // Create "___ Food Waste Per Capita" based on selection
-    const tempText = category + " Food Waste Per Capita in Australia"
     interactive_svg.append('text')
                 .attr('x', interactive_width / 2)
-                .attr('y', 12)
+                .attr('y', 16)
                 .attr('class', 'interactiveTitle')
                 .attr('text-anchor', 'middle')
                 .style('font-family', 'Helvetica')
                 .style('font-size', '20px')
-                .text(tempText);
+                .text(category + " Food Waste Per Capita in Australia");
 }
 
 // Add Total Value At Top of Bar
