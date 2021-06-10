@@ -154,6 +154,8 @@ function AddCountries(values, countries) {
                .data(values, d => d)
                .enter()
                .append("text")
+               .transition(3000)
+               .ease(d3.easeCircleOut)
                .attr("class","countries")
                .attr("text-anchor", "middle")
                .attr("font-size", "13px")
