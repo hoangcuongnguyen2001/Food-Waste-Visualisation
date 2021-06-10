@@ -2,7 +2,7 @@
 // https://stackoverflow.com/questions/67518899/bar-chart-how-could-i-align-the-data-with-countries-when-sorting-in-d3-v5/67529684
 
 "use strict";
-// Sorting Countries for CSV file. _
+// Sorting Countries for CSV file.
 function sortCountries(countries, values, sort) {
    if(sort != "none") {
       let inputCountries = [...countries];
@@ -33,7 +33,7 @@ const third_width = 1000;
 const third_height = 500;
 const third_padding = 50;
    
-const third_countries = ["Australia", "Austria", "Belgium", "Denmark", "Finland", "France", "Italy", "Japan", "Netherlands","New Zealand", "Norway", "Poland", "Sweden", "UK","USA",]
+const third_countries = ["Australia", "Austria", "Belgium", "Denmark", "Finland", "France", "Italy", "Japan", "Netherlands","NZ", "Norway", "Poland", "Sweden", "UK","USA",]
 const third_data = [102, 39, 50, 81, 50, 85, 65, 57, 64, 61, 79, 56, 81, 77, 59,];
 
 var sort = "none";
@@ -79,14 +79,15 @@ function createChart(values) {
       
                   third_svg.append("text")
                      .attr("id", "tooltip")
-                    .attr("x", third_xPosition)
-                    .attr("y", third_yPosition)
-                    .attr("text-anchor", "middle")
+                     .attr("x", third_xPosition)
+                     .attr("y", third_yPosition)
+                     .attr("text-anchor", "middle")
                      .attr("font-family", "Helvetica")
-                    .attr("font-size", "11px")
-                    .attr("font-weight", "bold")
-                    .attr("fill", "white")
+                     .attr("font-size", "11px")
+                     .attr("font-weight", "bold")
+                     .attr("fill", "white")
                      .text(d);
+
                   third_svg.selectAll("rect").style("opacity", 0.5);
                   d3.select(this).style("opacity", 1);
                })
@@ -116,7 +117,7 @@ third_svg.append('text')
             .attr('transform', 'rotate(270)')
             .style('font-family', 'Helvetica')
             .style('font-size', 'small')
-            .text('Food waste per capita (kg/year)');
+            .text('Household Food waste per capita (kg/year)');
 
 // Create "Country Household Food waste per capita (kg/year)" as title
 third_svg.append("text")
@@ -124,6 +125,7 @@ third_svg.append("text")
             .attr("y", 15)
             .attr('text-anchor', 'middle')
             .style('font-family', 'Helvetica')
+            .style('font-size', '20px')
             .text('Household Food Waste Per Capita per Country');
 
 // Create "Year" on  X axis
@@ -154,7 +156,7 @@ function AddCountries(values, countries) {
                .append("text")
                .attr("class","countries")
                .attr("text-anchor", "middle")
-               .attr("font-size", "10px")
+               .attr("font-size", "13px")
                .attr("x", (d, i) => third_xScale(i) + 27)
                .attr("y", d => third_yScale(d) - 3)
                .text((d, i) => countries[i])

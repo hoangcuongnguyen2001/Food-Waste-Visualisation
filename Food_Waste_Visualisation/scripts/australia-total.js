@@ -131,10 +131,10 @@ svg.append('text')
 // Create "Overall Food Waste Per Capita"
 svg.append('text')
     .attr('x', width / 2)
-    .attr('y', 12)
+    .attr('y', 16)
     .attr('text-anchor', 'middle')
     .style('font-family', 'Helvetica')
-    .style('font-size', '16px')
+    .style('font-size', '20px')
     .text('Overall Food Waste Per Capita in Australia');
 
 var size = 10;
