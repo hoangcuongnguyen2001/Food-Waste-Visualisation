@@ -116,13 +116,13 @@ const onDataJsonLoaded = json => {
     });
 
   second_svg.selectAll('g.state')
-    .on('mousemove', d => {
+    .on('mouseenter', d => {
       const stateData = json.find(s => s.States == d.properties.STATE_NAME);
       rows.forEach(row => second_tooltip.select(`.${row.replace(' ', '_')}`).text(stateData[row]));
       second_tooltip.attr('transform', `translate(${path.centroid(d)})`);
       second_tooltip.style('visibility', 'visible');
     })
-    .on('mouseout', () => second_tooltip.style('visibility', 'hidden'));
+    .on('mouseleave', () => second_tooltip.style('visibility', 'hidden'));
 
   // Hint from Susan Lu website: https://d3-legend.susielu.com/
   // Note: To create this choropleth, you need to use another JavaScript file as a website here:

@@ -85,7 +85,7 @@ interactive_svg.append('text')
             .style('font-size', 'small')
             .text('Food waste per capita (kg/year)');
 
-interactiveTitle("Energy Recovery");
+interactiveTitle("Energy recovery");
 
 function interactiveTitle(category) {
     // Remove Previous "__ Food Waste Per Capita" title
@@ -99,7 +99,7 @@ function interactiveTitle(category) {
                 .attr('text-anchor', 'middle')
                 .style('font-family', 'Helvetica')
                 .style('font-size', '20px')
-                .text(category + " Food Waste Per Capita in Australia");
+                .text(category + " food waste per capita in Australia");
 }
 
 // Add Total Value At Top of Bar
@@ -115,7 +115,7 @@ d3.select("#energyrecovery")
                 interactiveXandYAxis();
                 fillRect("#a17724");
                 createXandYAxis();
-                interactiveTitle("Energy Recovery");
+                interactiveTitle("Energy recovery");
             });
 
 // If disposal button is clicked on
@@ -174,7 +174,8 @@ function interactiveXandYAxis() {
 function fillRect(colour) {
     interactive_svg.selectAll("rect")
                 .data(interactive_dataset)
-                .transition(2000)
+                .transition()
+                .duration(350)
                 .ease(d3.easeCircleIn)
                 .attr("y", d => interactive_yScale(d))
                 .attr("height", d => interactive_height - interactive_padding - interactive_yScale(d))
@@ -186,6 +187,7 @@ function createXandYAxis() {
     interactive_svg.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(0, " + (interactive_height - interactive_padding) + ")")
+                .style("font-size", "12px")
                 .call(interactive_xAxis);
 
     interactive_svg.append("g")

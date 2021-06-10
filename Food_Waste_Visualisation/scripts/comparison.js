@@ -123,8 +123,9 @@ third_svg.append("text")
             .attr("x", third_width / 2)
             .attr("y", 15)
             .attr('text-anchor', 'middle')
+            .style('font-size', '20px')
             .style('font-family', 'Helvetica')
-            .text('Household Food Waste Per Capita per Country');
+            .text('Household food waste per capita per country');
 
 // Create "Year" on  X axis
 third_svg.append('text')
@@ -156,7 +157,7 @@ function AddCountries(values, countries) {
                .ease(d3.easeCircleOut)
                .attr("class","countries")
                .attr("text-anchor", "middle")
-               .attr("font-size", "10px")
+               .attr("font-size", "11px")
                .attr("x", (d, i) => third_xScale(i) + 27)
                .attr("y", d => third_yScale(d) - 3)
                .text((d, i) => countries[i])
