@@ -109,7 +109,7 @@ interactive_svg.append("text")
 d3.select("#energyrecovery")
             .on("click", () => {
                 displayIndividualBarchart();
-                interactive_dataset = [43.4, 40.1, 38.2, 40.8, 44.8, 43.3, 49.2, 46.8, 46.3, 41.3];
+                interactive_dataset = [44, 40, 38, 41, 44, 43, 49, 47, 46, 41];
                 interactive_svg.selectAll(".axis").remove();
                 interactiveXandYScale();
                 interactiveXandYAxis();
@@ -135,7 +135,7 @@ d3.select("#disposal")
 d3.select("#recycling")
             .on("click", () => {
                 displayIndividualBarchart();
-                interactive_dataset = [1.89, 1.13, 2.05, 1.87, 7.49, 21.73, 20.04, 24.39, 23.94, 24.05];
+                interactive_dataset = [2, 1, 2, 2, 7, 21, 20, 24, 24, 24];
                 interactive_svg.selectAll(".axis").remove();
                 interactiveXandYScale();
                 interactiveXandYAxis();
