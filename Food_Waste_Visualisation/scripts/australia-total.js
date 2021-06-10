@@ -53,6 +53,7 @@ var groups = svg.selectAll("g")
 
 
 //Create tooltip for the chart.
+// Source: http://bl.ocks.org/mstanaland/6100713
 const tooltip = svg.append("g")
                   .attr("class", "tooltip")
                   .style("display", "none");
@@ -68,7 +69,8 @@ tooltip.append("text")
       .attr("dy", "1.2em")
       .style("text-anchor", "middle")
       .attr("font-size", "12px")
-      .attr("font-weight", "bold");
+      .attr("font-weight", "bold")
+      .attr("font-family", "Helvetica");
 
 // Add a rect for each data value
 groups.selectAll("rect")
@@ -88,12 +90,12 @@ groups.selectAll("rect")
           tooltip.select("text").text(d[1] - d[0]);
           // changing opacity.
           d3.selectAll("rect").style("opacity", 0.5);
-          d3.select(this).style("opacity", 1);
+          d3.select(this).style("opacity", 1.5);
       })
       .on("mouseout", function() { 
           //return to normal.
           tooltip.style("display", "none"); 
-          d3.selectAll("rect").style("opacity", 0.8);
+          d3.selectAll("rect").style("opacity", 1);
       });
 
 //Create X axis
@@ -131,10 +133,10 @@ svg.append('text')
 // Create "Overall Food Waste Per Capita"
 svg.append('text')
     .attr('x', width / 2)
-    .attr('y', 16)
+    .attr('y', 12)
     .attr('text-anchor', 'middle')
     .style('font-family', 'Helvetica')
-    .style('font-size', '20px')
+    .style('font-size', '16px')
     .text('Overall Food Waste Per Capita in Australia');
 
 var size = 10;
@@ -167,6 +169,8 @@ svg.selectAll(".text")
     .append("text")
     .attr("class", "text")
     .attr("text-anchor", "middle")
+    .attr('font-size', 'small')
+    .attr('font-family', 'Helvetica')
     .attr("x", (d,i) => xScale(i) + 35)
     .attr("y", d => yScale(d.Energy_Recovery + d.Disposal +d.Recycling) - 3)
     .text((d) => d.Energy_Recovery + d.Disposal +d.Recycling)
