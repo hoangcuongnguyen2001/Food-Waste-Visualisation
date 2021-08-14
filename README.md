@@ -8,3 +8,4 @@ Data source:
 - National, state and territory population, Australian Bureau of Statistics: https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release
  
 Note: The process of creating the visualisation is displayed in the file "Data_Visualisation_Process_Book_3.pdf" here. Currently I could not put a public website for that project, because the original website is hosted in Swinburne's server, but I will try as soon as possible to put the link here as a reference.
+Also, thank you Michael Rovinsky (https://www.linkedin.com/in/mrovinsky/) for your help to complete the project. (You could refer to our questions with Michael in my StackOverflow profile here: https://stackoverflow.com/questions/67649076/how-to-create-tooltips-for-multiple-values-in-a-choropleth-in-d3-v5/67718199?noredirect=1#comment119722082_67718199)
